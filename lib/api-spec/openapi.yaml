@@ -3,13 +3,17 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: SelfMBA Marketing Portfolio API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: survey
+    description: Survey operations
+  - name: analytics
+    description: Analytics operations
 paths:
   /healthz:
     get:
@@ -24,6 +28,54 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /survey/responses:
+    post:
+      operationId: submitSurvey
+      tags: [survey]
+      summary: Submit a survey response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SurveyInput"
+      responses:
+        "201":
+          description: Survey submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SurveyResponse"
+        "400":
+          description: Validation error
+    get:
+      operationId: listSurveyResponses
+      tags: [survey]
+      summary: List all survey responses
+      responses:
+        "200":
+          description: List of responses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SurveyResponse"
+
+  /survey/analytics:
+    get:
+      operationId: getSurveyAnalytics
+      tags: [analytics]
+      summary: Get aggregated survey analytics
+      responses:
+        "200":
+          description: Survey analytics data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SurveyAnalytics"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +86,140 @@ components:
       required:
         - status
 
+    SurveyInput:
+      type: object
+      required:
+        - overallRating
+        - mostValuableSection
+        - wouldRecommend
+      properties:
+        respondentName:
+          type: ["string", "null"]
+        respondentEmail:
+          type: ["string", "null"]
+        howFound:
+          type: string
+          enum: [linkedin, google, referral, social_media, direct, other]
+        overallRating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        mostValuableSection:
+          type: string
+          enum: [brand_identity, target_audience, positioning, marketing_mix, consumer_insights, campaign_strategy, overall]
+        wouldRecommend:
+          type: boolean
+        wouldHire:
+          type: boolean
+        openFeedback:
+          type: ["string", "null"]
+        marketingBackground:
+          type: string
+          enum: [student, professional, entrepreneur, recruiter, curious, other]
+
+    SurveyResponse:
+      type: object
+      required:
+        - id
+        - overallRating
+        - mostValuableSection
+        - wouldRecommend
+        - submittedAt
+      properties:
+        id:
+          type: integer
+        respondentName:
+          type: ["string", "null"]
+        respondentEmail:
+          type: ["string", "null"]
+        howFound:
+          type: ["string", "null"]
+        overallRating:
+          type: integer
+        mostValuableSection:
+          type: string
+        wouldRecommend:
+          type: boolean
+        wouldHire:
+          type: ["boolean", "null"]
+        openFeedback:
+          type: ["string", "null"]
+        marketingBackground:
+          type: ["string", "null"]
+        submittedAt:
+          type: string
+
+    SurveyAnalytics:
+      type: object
+      required:
+        - totalResponses
+        - averageRating
+        - recommendRate
+        - hireRate
+        - ratingDistribution
+        - sectionPopularity
+        - howFoundDistribution
+        - backgroundDistribution
+        - recentFeedback
+      properties:
+        totalResponses:
+          type: integer
+        averageRating:
+          type: number
+        recommendRate:
+          type: number
+        hireRate:
+          type: number
+        ratingDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistributionItem"
+        sectionPopularity:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistributionItem"
+        howFoundDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistributionItem"
+        backgroundDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistributionItem"
+        recentFeedback:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeedbackSnippet"
+
+    DistributionItem:
+      type: object
+      required:
+        - label
+        - count
+        - percentage
+      properties:
+        label:
+          type: string
+        count:
+          type: integer
+        percentage:
+          type: number
+
+    FeedbackSnippet:
+      type: object
+      required:
+        - id
+        - text
+        - rating
+        - submittedAt
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+        rating:
+          type: integer
+        name:
+          type: ["string", "null"]
+        submittedAt:
+          type: string
