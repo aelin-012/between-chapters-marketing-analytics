@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, surveyResponsesTable } from "@workspace/db";
-import { desc, sql, count, eq } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import { SubmitSurveyBody } from "@workspace/api-zod";
 
 const router = Router();
@@ -17,15 +17,18 @@ router.post("/survey/responses", async (req, res) => {
   const [created] = await db
     .insert(surveyResponsesTable)
     .values({
-      respondentName: data.respondentName ?? null,
-      respondentEmail: data.respondentEmail ?? null,
-      howFound: data.howFound ?? null,
-      overallRating: data.overallRating,
-      mostValuableSection: data.mostValuableSection,
-      wouldRecommend: data.wouldRecommend,
-      wouldHire: data.wouldHire ?? null,
-      openFeedback: data.openFeedback ?? null,
-      marketingBackground: data.marketingBackground ?? null,
+      celebrationFrequency: data.celebrationFrequency,
+      recentCelebration: data.recentCelebration,
+      monthlyAestheticSpend: data.monthlyAestheticSpend,
+      mostImportantFactor: data.mostImportantFactor,
+      switchTriggers: data.switchTriggers ? data.switchTriggers.join(",") : null,
+      packageChoice: data.packageChoice,
+      biggestFear: data.biggestFear,
+      perfectCelebration: data.perfectCelebration ?? null,
+      bookingIntent: data.bookingIntent,
+      respondentAge: data.respondentAge ?? null,
+      respondentOccupation: data.respondentOccupation ?? null,
+      respondentCity: data.respondentCity ?? null,
     })
     .returning();
 
@@ -33,20 +36,6 @@ router.post("/survey/responses", async (req, res) => {
     ...created,
     submittedAt: created.submittedAt.toISOString(),
   });
-});
-
-router.get("/survey/responses", async (_req, res) => {
-  const rows = await db
-    .select()
-    .from(surveyResponsesTable)
-    .orderBy(desc(surveyResponsesTable.submittedAt));
-
-  res.json(
-    rows.map((r) => ({
-      ...r,
-      submittedAt: r.submittedAt.toISOString(),
-    }))
-  );
 });
 
 router.get("/survey/analytics", async (_req, res) => {
@@ -60,86 +49,124 @@ router.get("/survey/analytics", async (_req, res) => {
   if (total === 0) {
     res.json({
       totalResponses: 0,
-      averageRating: 0,
-      recommendRate: 0,
-      hireRate: 0,
-      ratingDistribution: [1, 2, 3, 4, 5].map((r) => ({ label: String(r), count: 0, percentage: 0 })),
-      sectionPopularity: [],
-      howFoundDistribution: [],
-      backgroundDistribution: [],
-      recentFeedback: [],
+      bookingIntentScore: 0,
+      celebrationFrequencyDistribution: [],
+      recentCelebrationDistribution: [],
+      spendDistribution: [],
+      importantFactorDistribution: [],
+      packageChoiceDistribution: [],
+      biggestFearDistribution: [],
+      switchTriggerDistribution: [],
+      bookingIntentDistribution: [],
+      perfectCelebrationWords: [],
     });
     return;
   }
 
-  const avgRating =
-    allResponses.reduce((sum, r) => sum + r.overallRating, 0) / total;
+  const intentWeights: Record<string, number> = { definitely: 100, maybe: 66, probably_not: 33, no: 0 };
+  const intentScore =
+    allResponses.reduce((sum, r) => sum + (intentWeights[r.bookingIntent] ?? 0), 0) / total;
 
-  const recommendCount = allResponses.filter((r) => r.wouldRecommend).length;
-  const hireCount = allResponses.filter((r) => r.wouldHire === true).length;
-  const hireEligible = allResponses.filter((r) => r.wouldHire !== null).length;
-
-  const ratingDistribution = [1, 2, 3, 4, 5].map((rating) => {
-    const cnt = allResponses.filter((r) => r.overallRating === rating).length;
-    return { label: `${rating} star${rating > 1 ? "s" : ""}`, count: cnt, percentage: Math.round((cnt / total) * 100) };
-  });
-
-  const sectionCounts: Record<string, number> = {};
-  for (const r of allResponses) {
-    sectionCounts[r.mostValuableSection] = (sectionCounts[r.mostValuableSection] ?? 0) + 1;
+  function distribution(key: keyof typeof allResponses[0]) {
+    const counts: Record<string, number> = {};
+    for (const r of allResponses) {
+      const val = r[key] as string;
+      if (val) counts[val] = (counts[val] ?? 0) + 1;
+    }
+    return Object.entries(counts)
+      .map(([label, count]) => ({ label: formatLabel(label), count, percentage: Math.round((count / total) * 100) }))
+      .sort((a, b) => b.count - a.count);
   }
-  const sectionPopularity = Object.entries(sectionCounts)
-    .map(([label, cnt]) => ({ label: formatLabel(label), count: cnt, percentage: Math.round((cnt / total) * 100) }))
-    .sort((a, b) => b.count - a.count);
 
-  const foundCounts: Record<string, number> = {};
+  // Switch triggers are stored comma-separated
+  const triggerCounts: Record<string, number> = {};
   for (const r of allResponses) {
-    if (r.howFound) {
-      foundCounts[r.howFound] = (foundCounts[r.howFound] ?? 0) + 1;
+    if (r.switchTriggers) {
+      for (const t of r.switchTriggers.split(",")) {
+        const trimmed = t.trim();
+        if (trimmed) triggerCounts[trimmed] = (triggerCounts[trimmed] ?? 0) + 1;
+      }
     }
   }
-  const howFoundDistribution = Object.entries(foundCounts)
-    .map(([label, cnt]) => ({ label: formatLabel(label), count: cnt, percentage: Math.round((cnt / total) * 100) }))
+  const switchTriggerDistribution = Object.entries(triggerCounts)
+    .map(([label, count]) => ({ label: formatLabel(label), count, percentage: Math.round((count / total) * 100) }))
     .sort((a, b) => b.count - a.count);
 
-  const bgCounts: Record<string, number> = {};
+  // Word frequency for open answers
+  const stopWords = new Set(["a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "is", "it", "i", "my", "me", "be", "that", "this", "just", "want", "would", "feel", "like", "very", "so", "do", "not", "have", "more", "all", "get", "can", "we", "they", "was", "are"]);
+  const wordCounts: Record<string, number> = {};
   for (const r of allResponses) {
-    if (r.marketingBackground) {
-      bgCounts[r.marketingBackground] = (bgCounts[r.marketingBackground] ?? 0) + 1;
+    if (r.perfectCelebration) {
+      const words = r.perfectCelebration.toLowerCase().replace(/[^a-z\s]/g, "").split(/\s+/);
+      for (const w of words) {
+        if (w.length > 3 && !stopWords.has(w)) {
+          wordCounts[w] = (wordCounts[w] ?? 0) + 1;
+        }
+      }
     }
   }
-  const backgroundDistribution = Object.entries(bgCounts)
-    .map(([label, cnt]) => ({ label: formatLabel(label), count: cnt, percentage: Math.round((cnt / total) * 100) }))
-    .sort((a, b) => b.count - a.count);
-
-  const recentFeedback = allResponses
-    .filter((r) => r.openFeedback && r.openFeedback.trim().length > 0)
-    .slice(0, 6)
-    .map((r) => ({
-      id: r.id,
-      text: r.openFeedback!,
-      rating: r.overallRating,
-      name: r.respondentName ?? null,
-      submittedAt: r.submittedAt.toISOString(),
-    }));
+  const perfectCelebrationWords = Object.entries(wordCounts)
+    .map(([word, count]) => ({ word, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 30);
 
   res.json({
     totalResponses: total,
-    averageRating: Math.round(avgRating * 10) / 10,
-    recommendRate: Math.round((recommendCount / total) * 100),
-    hireRate: hireEligible > 0 ? Math.round((hireCount / hireEligible) * 100) : 0,
-    ratingDistribution,
-    sectionPopularity,
-    howFoundDistribution,
-    backgroundDistribution,
-    recentFeedback,
+    bookingIntentScore: Math.round(intentScore),
+    celebrationFrequencyDistribution: distribution("celebrationFrequency"),
+    recentCelebrationDistribution: distribution("recentCelebration"),
+    spendDistribution: distribution("monthlyAestheticSpend"),
+    importantFactorDistribution: distribution("mostImportantFactor"),
+    packageChoiceDistribution: distribution("packageChoice"),
+    biggestFearDistribution: distribution("biggestFear"),
+    switchTriggerDistribution,
+    bookingIntentDistribution: distribution("bookingIntent"),
+    perfectCelebrationWords,
   });
 });
 
 function formatLabel(key: string): string {
-  return key
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  const map: Record<string, string> = {
+    never: "Never",
+    sometimes: "Sometimes",
+    often: "Often",
+    always: "Always",
+    birthday: "Birthday",
+    graduation: "Graduation",
+    anniversary: "Anniversary",
+    promotion: "Promotion",
+    other: "Other",
+    under_1000: "Under ₹1,000",
+    between_1000_3000: "₹1,000–₹3,000",
+    between_3000_6000: "₹3,000–₹6,000",
+    above_6000: "₹6,000+",
+    emotion: "Emotion / Memory",
+    aesthetics: "Aesthetics / Photos",
+    price: "Price",
+    convenience: "Convenience",
+    photos: "Photos / Content",
+    personalization: "Personalization",
+    unique_styling: "Unique Aesthetic Styling",
+    emotional_touches: "Emotional / Personal Touches",
+    better_photos: "Better Photos & Videos",
+    less_stress: "Less Planning Stress",
+    intimate_experience: "Intimate Experience",
+    custom_themes: "Custom Themes",
+    social_proof: "Seeing Someone Experience It First",
+    moment: "The Moment (₹9,900)",
+    story: "The Story (₹14,500)",
+    chapter: "The Chapter (₹17,900)",
+    late_execution: "Late Execution",
+    looks_cheap: "Looks Cheap in Photos",
+    too_expensive: "Too Expensive",
+    feels_generic: "Feels Generic",
+    no_personalization: "No Personalization",
+    definitely: "Definitely",
+    maybe: "Maybe",
+    probably_not: "Probably Not",
+    no: "No",
+  };
+  return map[key] ?? key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export default router;

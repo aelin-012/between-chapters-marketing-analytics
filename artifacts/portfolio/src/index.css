@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -51,93 +51,95 @@
 }
 
 :root {
-  --background: 40 20% 97%; /* Cream */
-  --foreground: 0 0% 10%; /* Ink */
-  --border: 40 10% 85%;
-  --input: 40 10% 85%;
-  --ring: 10 61% 54%;
+  --background: 40 33% 96%; /* #F9F6F0 Warm Ivory */
+  --foreground: 27 53% 7%; /* #1A1008 Espresso */
+  
+  --border: 40 20% 85%;
+  --input: 40 20% 85%;
+  --ring: 16 55% 50%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 10%;
-  --card-border: 40 10% 90%;
+  --card: 40 40% 98%; 
+  --card-foreground: 27 53% 7%;
+  --card-border: 40 20% 90%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 10%;
-  --popover-border: 40 10% 90%;
+  --popover: 40 40% 98%;
+  --popover-foreground: 27 53% 7%;
+  --popover-border: 40 20% 90%;
 
-  --primary: 10 61% 54%; /* Terracotta */
-  --primary-foreground: 0 0% 100%;
-  --primary-border: 10 61% 44%;
+  --primary: 16 55% 50%; /* #C4603A Terracotta */
+  --primary-foreground: 40 33% 96%;
+  --primary-border: 16 55% 40%;
 
-  --secondary: 40 10% 90%;
-  --secondary-foreground: 0 0% 10%;
-  --secondary-border: 40 10% 80%;
+  --secondary: 126 12% 58%; /* #8A9E8C Sage Green */
+  --secondary-foreground: 27 53% 7%;
+  --secondary-border: 126 12% 48%;
 
-  --muted: 40 15% 94%;
-  --muted-foreground: 0 0% 40%;
-  --muted-border: 40 10% 85%;
+  --muted: 40 20% 90%; /* Dusty Beige */
+  --muted-foreground: 27 30% 40%;
+  --muted-border: 40 20% 85%;
 
-  --accent: 40 20% 92%;
-  --accent-foreground: 0 0% 10%;
+  --accent: 40 30% 92%;
+  --accent-foreground: 27 53% 7%;
   --accent-border: 40 20% 82%;
 
   --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
+  --destructive-foreground: 40 33% 96%;
   --destructive-border: 0 84% 50%;
 
-  --chart-1: 10 61% 54%;
-  --chart-2: 0 0% 20%;
-  --chart-3: 40 20% 70%;
-  --chart-4: 10 40% 70%;
-  --chart-5: 40 10% 50%;
+  --chart-1: 16 55% 50%; /* Terracotta */
+  --chart-2: 126 12% 58%; /* Sage */
+  --chart-3: 27 53% 30%; /* Lighter Espresso */
+  --chart-4: 40 30% 70%; /* Beige */
+  --chart-5: 20 40% 60%; /* Clay */
 
-  --app-font-sans: 'Plus Jakarta Sans', sans-serif;
-  --app-font-serif: 'Playfair Display', serif;
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-serif: 'Cormorant Garamond', serif;
   --app-font-mono: ui-monospace, monospace;
   
-  --radius: 0.25rem;
+  --radius: 0.5rem;
 }
 
 .dark {
-  --background: 0 0% 10%;
-  --foreground: 40 20% 97%;
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 10 61% 54%;
+  --background: 27 53% 7%;
+  --foreground: 40 33% 96%;
+  
+  --border: 27 30% 20%;
+  --input: 27 30% 20%;
+  --ring: 16 55% 50%;
 
-  --card: 0 0% 13%;
-  --card-foreground: 40 20% 97%;
-  --card-border: 0 0% 20%;
+  --card: 27 40% 10%;
+  --card-foreground: 40 33% 96%;
+  --card-border: 27 30% 15%;
 
-  --popover: 0 0% 13%;
-  --popover-foreground: 40 20% 97%;
-  --popover-border: 0 0% 20%;
+  --popover: 27 40% 10%;
+  --popover-foreground: 40 33% 96%;
+  --popover-border: 27 30% 15%;
 
-  --primary: 10 61% 54%;
-  --primary-foreground: 0 0% 100%;
-  --primary-border: 10 61% 44%;
+  --primary: 16 55% 50%;
+  --primary-foreground: 40 33% 96%;
+  --primary-border: 16 55% 40%;
 
-  --secondary: 0 0% 20%;
-  --secondary-foreground: 40 20% 97%;
-  --secondary-border: 0 0% 30%;
+  --secondary: 126 12% 48%;
+  --secondary-foreground: 40 33% 96%;
+  --secondary-border: 126 12% 38%;
 
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 60%;
-  --muted-border: 0 0% 25%;
+  --muted: 27 30% 15%;
+  --muted-foreground: 40 20% 70%;
+  --muted-border: 27 30% 25%;
 
-  --accent: 0 0% 20%;
-  --accent-foreground: 40 20% 97%;
-  --accent-border: 0 0% 30%;
+  --accent: 27 30% 20%;
+  --accent-foreground: 40 33% 96%;
+  --accent-border: 27 30% 30%;
 
   --destructive: 0 62% 30%;
-  --destructive-foreground: 40 20% 97%;
+  --destructive-foreground: 40 33% 96%;
   --destructive-border: 0 62% 20%;
   
-  --chart-1: 10 61% 54%;
-  --chart-2: 40 20% 80%;
-  --chart-3: 0 0% 40%;
-  --chart-4: 10 40% 40%;
-  --chart-5: 40 10% 70%;
+  --chart-1: 16 55% 50%;
+  --chart-2: 126 12% 58%;
+  --chart-3: 40 30% 70%;
+  --chart-4: 20 40% 60%;
+  --chart-5: 27 30% 40%;
 }
 
 @layer base {

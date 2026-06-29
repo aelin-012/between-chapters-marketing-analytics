@@ -1,0 +1,685 @@
+I actually think this is a much better project than just "making a website."
+
+You're accidentally creating **a complete product marketing + analytics case study**, which is exactly the kind of project recruiters like because it demonstrates that you can think end-to-end.
+
+After reading through your document, you've basically completed an entire marketing strategy for Between Chapters—from brand positioning and customer research to STP, value proposition, pricing, JTBD, buyer journey, behavioral economics, and market sizing. 
+
+Instead of presenting it like homework, present it like **a living business experiment.**
+
+---
+
+# The project I'd build
+
+Think of it like this:
+
+> **"Building Between Chapters using first-principles marketing."**
+
+Not
+
+> "These are my Self MBA assignments."
+
+Huge difference.
+
+Someone opening the site should feel like they're reading how a startup is being built.
+
+---
+
+# Website Flow
+
+## Hero
+
+---
+
+# Building Between Chapters
+
+*A real event brand built using marketing principles from Self MBA.*
+
+Button:
+
+> Explore the Journey
+
+Below that
+
+```
+17 Marketing Concepts Applied
+
+29-page Brand Strategy
+
+Real Customer Research
+
+Live Analytics Dashboard (Coming Soon)
+```
+
+---
+
+## About
+
+Who you are
+
+Why you're doing Self MBA
+
+Why this project exists
+
+Something like
+
+> Instead of taking notes, I decided to build an actual company alongside the curriculum.
+
+Every lesson immediately became part of Between Chapters.
+
+This website documents every decision.
+
+---
+
+## Timeline
+
+A beautiful timeline
+
+```
+Week 1
+
+Brand Foundation
+
+↓
+
+Customer Avatar
+
+↓
+
+Buying Journey
+
+↓
+
+Behavioural Biases
+
+↓
+
+JTBD
+
+↓
+
+Market Size
+
+↓
+
+STP
+
+↓
+
+Brand Identity
+
+↓
+
+Value Proposition
+
+↓
+
+Pricing Strategy
+
+↓
+
+Customer Validation (Live)
+```
+
+---
+
+## Every assignment becomes a page
+
+Not PDFs.
+
+Interactive pages.
+
+For example
+
+---
+
+### Customer Avatar
+
+Picture
+
+Name
+
+Age
+
+Goals
+
+Frustrations
+
+Apps
+
+Motivations
+
+Instead of paragraphs
+
+Use cards.
+
+---
+
+### Buying Journey
+
+Interactive horizontal timeline
+
+Need Recognition
+
+↓
+
+Information Search
+
+↓
+
+Evaluation
+
+↓
+
+Purchase
+
+↓
+
+Post Purchase
+
+Click each one
+
+Expand
+
+Show your thinking.
+
+---
+
+### Market Size
+
+Animated numbers
+
+TAM
+
+↓
+
+SAM
+
+↓
+
+SOM
+
+Like startup pitch decks.
+
+---
+
+### Pricing
+
+Three beautiful cards
+
+The Moment
+
+The Story ⭐
+
+The Chapter
+
+Hover animation
+
+Explain Decoy Effect.
+
+---
+
+### Biases
+
+Each bias as a card
+
+Peak-End Rule
+
+↓
+
+How I applied it
+
+↓
+
+Why
+
+↓
+
+Expected customer behaviour
+
+---
+
+### Brand Identity
+
+Color palette
+
+Typography
+
+Moodboard
+
+Voice examples
+
+Good copy
+
+Bad copy
+
+---
+
+# Here's the fun part...
+
+## Validation Lab
+
+This is where your analytics project starts.
+
+Big heading
+
+> Help Shape Between Chapters
+
+Instead of
+
+> Fill my survey
+
+People hate surveys.
+
+Instead
+
+Say
+
+> I'm building this brand publicly.
+>
+> I'd love your opinion.
+
+Way higher conversion.
+
+---
+
+# The survey shouldn't just collect opinions.
+
+It should test hypotheses.
+
+Think like a Product Manager.
+
+Instead of random questions...
+
+Every question should validate something you learned.
+
+Example
+
+---
+
+## Section 1
+
+Do you celebrate milestones?
+
+```
+Never
+
+Sometimes
+
+Often
+
+Always
+```
+
+Purpose
+
+Frequency analysis.
+
+---
+
+## Section 2
+
+Most recent celebration
+
+Birthday
+
+Graduation
+
+Anniversary
+
+Promotion
+
+Other
+
+Purpose
+
+Demand segmentation.
+
+---
+
+## Section 3
+
+How much did you spend?
+
+Ranges
+
+Purpose
+
+Pricing analysis.
+
+---
+
+## Section 4
+
+Rank what matters
+
+Drag and drop
+
+```
+Emotion
+
+Aesthetics
+
+Price
+
+Convenience
+
+Photos
+
+Personalization
+```
+
+Now you can calculate average rankings.
+
+---
+
+## Section 5
+
+Which planner would you choose?
+
+Show three fake packages.
+
+Randomize order.
+
+See which gets picked.
+
+Now you're literally testing pricing psychology.
+
+---
+
+## Section 6
+
+Show two landing pages
+
+Version A
+
+Luxury wording
+
+Version B
+
+Emotion wording
+
+Ask
+
+Which one makes you more likely to enquire?
+
+Boom.
+
+Mini A/B test.
+
+---
+
+## Section 7
+
+Which Instagram post would you click?
+
+Show four images.
+
+Track selection.
+
+Now you know preferred creative direction.
+
+---
+
+## Section 8
+
+What scares you most?
+
+Late execution
+
+Looks cheap
+
+Too expensive
+
+Feels generic
+
+No personalization
+
+Now you validate pains.
+
+---
+
+## Section 9
+
+Open question
+
+Describe your perfect celebration.
+
+You'll later use NLP.
+
+Word cloud
+
+Topic modelling
+
+Sentiment.
+
+---
+
+## Section 10
+
+Would you actually book?
+
+Definitely
+
+Maybe
+
+Probably not
+
+No
+
+Intent score.
+
+---
+
+# Analytics Dashboard
+
+THIS becomes your second project.
+
+Not just Google Forms.
+
+Pipeline
+
+```
+Website
+
+↓
+
+Google Form
+
+↓
+
+Google Sheets
+
+↓
+
+Python
+
+↓
+
+Power BI
+
+(or Tableau)
+
+↓
+
+Dashboard
+```
+
+Now your resume says
+
+> Built end-to-end customer research pipeline.
+
+---
+
+Dashboard ideas
+
+### Demographics
+
+Age
+
+Gender
+
+City
+
+Occupation
+
+---
+
+### Spending
+
+Average spend
+
+Median spend
+
+Distribution
+
+---
+
+### Purchase Drivers
+
+Ranked importance
+
+Emotion
+
+Price
+
+Convenience
+
+etc.
+
+---
+
+### Heatmaps
+
+Correlation
+
+Age vs Spend
+
+Occupation vs Budget
+
+Budget vs Booking Intent
+
+---
+
+### Funnel
+
+Visitors
+
+↓
+
+Started Survey
+
+↓
+
+Completed Survey
+
+↓
+
+Interested
+
+↓
+
+Contacted
+
+---
+
+### Word Cloud
+
+Most common words
+
+```
+Personal
+
+Memory
+
+Friends
+
+Warm
+
+Simple
+
+Love
+
+```
+
+---
+
+### Sentiment
+
+Positive
+
+Neutral
+
+Negative
+
+---
+
+### Booking Intent Score
+
+Weighted formula
+
+Now you have predictive analytics.
+
+---
+
+# Resume Impact
+
+Instead of
+
+> Self MBA Assignments
+
+You can say
+
+> Designed and validated an event-management brand by applying 17 marketing frameworks. Built a public case-study website, conducted customer research, collected survey data, and developed analytics dashboards to derive pricing and positioning insights.
+
+That sounds like someone who understands product, marketing, and data.
+
+---
+
+# Tech Stack (Free)
+
+Everything can be free:
+
+* **Frontend:** HTML/CSS/JavaScript or React
+* **Hosting:** GitHub Pages or Cloudflare Pages
+* **Survey:** Google Forms (embedded or linked)
+* **Data Storage:** Google Sheets
+* **Automation:** Google Apps Script (optional)
+* **Analytics:** Python (Pandas) + Power BI or Tableau Public
+* **Version Control:** GitHub
+
+---
+
+# One feature I'd add that most people won't think of
+
+At the very end, add a page called:
+
+> **What Changed My Mind**
+
+For every marketing concept, document:
+
+* My original assumption
+* What the research showed
+* What I changed
+* Why I changed it
+
+For example:
+
+| Concept   | Initial Assumption | Research Result                                        | Decision                          |
+| --------- | ------------------ | ------------------------------------------------------ | --------------------------------- |
+| Pricing   | ₹10,000            | Customers associate low prices with generic quality    | Increased target price to ₹14,500 |
+| Customer  | College students   | Young professionals also fit the emotional positioning | Expanded target audience          |
+| Messaging | Event planning     | Memory creation resonated more strongly                | Shifted brand messaging           |
+
+This shows **decision-making**, not just knowledge. Recruiters and hiring managers care much more about *how you think* than whether you can recite marketing frameworks.
+
+## Overall
+
+I genuinely think this can become a standout portfolio project. It combines:
+
+* **Marketing strategy** (brand building, positioning, pricing, customer research)
+* **Product thinking** (hypothesis-driven validation)
+* **Data analytics** (survey design, dashboards, insights)
+* **Web development** (interactive portfolio)
+* **Storytelling** (documenting the evolution of a real brand)
+
+Done well, it won't look like coursework—it will look like the public build log of a founder who uses marketing and data to make decisions. That's a much stronger narrative for both marketing and analytics roles.

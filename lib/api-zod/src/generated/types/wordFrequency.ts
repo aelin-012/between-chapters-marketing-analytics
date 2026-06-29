@@ -6,8 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface DistributionItem {
-  label: string;
+export interface WordFrequency {
+  word: string;
   count: number;
-  percentage: number;
 }

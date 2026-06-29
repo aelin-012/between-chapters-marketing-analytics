@@ -3,7 +3,7 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: SelfMBA Marketing Portfolio API
+  description: Between Chapters – Marketing Portfolio API
 servers:
   - url: /api
     description: Base API path
@@ -20,7 +20,6 @@ paths:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -33,7 +32,7 @@ paths:
     post:
       operationId: submitSurvey
       tags: [survey]
-      summary: Submit a survey response
+      summary: Submit a Validation Lab response
       requestBody:
         required: true
         content:
@@ -49,28 +48,15 @@ paths:
                 $ref: "#/components/schemas/SurveyResponse"
         "400":
           description: Validation error
-    get:
-      operationId: listSurveyResponses
-      tags: [survey]
-      summary: List all survey responses
-      responses:
-        "200":
-          description: List of responses
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/SurveyResponse"
 
   /survey/analytics:
     get:
       operationId: getSurveyAnalytics
       tags: [analytics]
-      summary: Get aggregated survey analytics
+      summary: Get aggregated Validation Lab analytics
       responses:
         "200":
-          description: Survey analytics data
+          description: Analytics data
           content:
             application/json:
               schema:
@@ -80,71 +66,95 @@ components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
     SurveyInput:
       type: object
       required:
-        - overallRating
-        - mostValuableSection
-        - wouldRecommend
+        - celebrationFrequency
+        - recentCelebration
+        - monthlyAestheticSpend
+        - mostImportantFactor
+        - packageChoice
+        - biggestFear
+        - bookingIntent
       properties:
-        respondentName:
-          type: ["string", "null"]
-        respondentEmail:
-          type: ["string", "null"]
-        howFound:
+        celebrationFrequency:
           type: string
-          enum: [linkedin, google, referral, social_media, direct, other]
-        overallRating:
-          type: integer
-          minimum: 1
-          maximum: 5
-        mostValuableSection:
+          enum: [never, sometimes, often, always]
+        recentCelebration:
           type: string
-          enum: [brand_identity, target_audience, positioning, marketing_mix, consumer_insights, campaign_strategy, overall]
-        wouldRecommend:
-          type: boolean
-        wouldHire:
-          type: boolean
-        openFeedback:
+          enum: [birthday, graduation, anniversary, promotion, other]
+        monthlyAestheticSpend:
+          type: string
+          enum: [under_1000, between_1000_3000, between_3000_6000, above_6000]
+        mostImportantFactor:
+          type: string
+          enum: [emotion, aesthetics, price, convenience, photos, personalization]
+        switchTriggers:
+          type: array
+          items:
+            type: string
+            enum: [unique_styling, emotional_touches, better_photos, less_stress, intimate_experience, custom_themes, social_proof]
+        packageChoice:
+          type: string
+          enum: [moment, story, chapter]
+        biggestFear:
+          type: string
+          enum: [late_execution, looks_cheap, too_expensive, feels_generic, no_personalization]
+        perfectCelebration:
           type: ["string", "null"]
-        marketingBackground:
+        bookingIntent:
           type: string
-          enum: [student, professional, entrepreneur, recruiter, curious, other]
+          enum: [definitely, maybe, probably_not, no]
+        respondentAge:
+          type: ["string", "null"]
+        respondentOccupation:
+          type: ["string", "null"]
+        respondentCity:
+          type: ["string", "null"]
 
     SurveyResponse:
       type: object
       required:
         - id
-        - overallRating
-        - mostValuableSection
-        - wouldRecommend
+        - celebrationFrequency
+        - recentCelebration
+        - monthlyAestheticSpend
+        - mostImportantFactor
+        - packageChoice
+        - biggestFear
+        - bookingIntent
         - submittedAt
       properties:
         id:
           type: integer
-        respondentName:
-          type: ["string", "null"]
-        respondentEmail:
-          type: ["string", "null"]
-        howFound:
-          type: ["string", "null"]
-        overallRating:
-          type: integer
-        mostValuableSection:
+        celebrationFrequency:
           type: string
-        wouldRecommend:
-          type: boolean
-        wouldHire:
-          type: ["boolean", "null"]
-        openFeedback:
+        recentCelebration:
+          type: string
+        monthlyAestheticSpend:
+          type: string
+        mostImportantFactor:
+          type: string
+        switchTriggers:
           type: ["string", "null"]
-        marketingBackground:
+        packageChoice:
+          type: string
+        biggestFear:
+          type: string
+        perfectCelebration:
+          type: ["string", "null"]
+        bookingIntent:
+          type: string
+        respondentAge:
+          type: ["string", "null"]
+        respondentOccupation:
+          type: ["string", "null"]
+        respondentCity:
           type: ["string", "null"]
         submittedAt:
           type: string
@@ -153,50 +163,62 @@ components:
       type: object
       required:
         - totalResponses
-        - averageRating
-        - recommendRate
-        - hireRate
-        - ratingDistribution
-        - sectionPopularity
-        - howFoundDistribution
-        - backgroundDistribution
-        - recentFeedback
+        - bookingIntentScore
+        - celebrationFrequencyDistribution
+        - recentCelebrationDistribution
+        - spendDistribution
+        - importantFactorDistribution
+        - packageChoiceDistribution
+        - biggestFearDistribution
+        - switchTriggerDistribution
+        - bookingIntentDistribution
+        - perfectCelebrationWords
       properties:
         totalResponses:
           type: integer
-        averageRating:
+        bookingIntentScore:
           type: number
-        recommendRate:
-          type: number
-        hireRate:
-          type: number
-        ratingDistribution:
+          description: Weighted 0–100 score (definitely=100, maybe=66, probably_not=33, no=0)
+        celebrationFrequencyDistribution:
           type: array
           items:
             $ref: "#/components/schemas/DistributionItem"
-        sectionPopularity:
+        recentCelebrationDistribution:
           type: array
           items:
             $ref: "#/components/schemas/DistributionItem"
-        howFoundDistribution:
+        spendDistribution:
           type: array
           items:
             $ref: "#/components/schemas/DistributionItem"
-        backgroundDistribution:
+        importantFactorDistribution:
           type: array
           items:
             $ref: "#/components/schemas/DistributionItem"
-        recentFeedback:
+        packageChoiceDistribution:
           type: array
           items:
-            $ref: "#/components/schemas/FeedbackSnippet"
+            $ref: "#/components/schemas/DistributionItem"
+        biggestFearDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistributionItem"
+        switchTriggerDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistributionItem"
+        bookingIntentDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistributionItem"
+        perfectCelebrationWords:
+          type: array
+          items:
+            $ref: "#/components/schemas/WordFrequency"
 
     DistributionItem:
       type: object
-      required:
-        - label
-        - count
-        - percentage
+      required: [label, count, percentage]
       properties:
         label:
           type: string
@@ -205,21 +227,11 @@ components:
         percentage:
           type: number
 
-    FeedbackSnippet:
+    WordFrequency:
       type: object
-      required:
-        - id
-        - text
-        - rating
-        - submittedAt
+      required: [word, count]
       properties:
-        id:
-          type: integer
-        text:
+        word:
           type: string
-        rating:
+        count:
           type: integer
-        name:
-          type: ["string", "null"]
-        submittedAt:
-          type: string
