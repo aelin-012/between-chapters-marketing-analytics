@@ -1,17 +1,24 @@
 ---
-name: Replit artifact path-based ID constraint
-description: Why artifacts with path-based IDs (id = "artifacts/foo") cannot be moved to different directories
+name: Replit artifact path-based ID constraint and stub workaround
+description: Why artifacts with path-based IDs can't move, and the stub pattern that enables frontend/backend top-level folders
 ---
 
 ## Rule
-Never attempt to physically move an artifact directory away from `artifacts/<slug>/` when the artifact has a path-based ID (e.g. `id = "artifacts/portfolio"`). The Replit proxy routes traffic by constructing the artifact.toml path from the ID, so the proxy will always look at `artifacts/portfolio/.replit-artifact/artifact.toml` regardless of where `verifyAndReplaceArtifactToml` points the registration.
+Artifacts with path-based IDs (e.g. `id = "artifacts/portfolio"`) CANNOT be moved out of `artifacts/<slug>/` — the proxy hardcodes the ID as the filesystem path for artifact.toml lookup. UUID-based artifact IDs (e.g. `id = "3B4_FFSkEVBkAeYMFRJ2e"`) can be registered to any directory via verifyAndReplaceArtifactToml.
 
-## Why
-- `verifyAndReplaceArtifactToml` CAN update the `artifactDir` registration in Replit's internal DB (confirmed by `listArtifacts()` showing the new path), but the **proxy layer** ignores this and uses the ID as the literal filesystem path.
-- UUID-based IDs (e.g. `id = "3B4_FFSkEVBkAeYMFRJ2e"`) DO support moving — the backend API server moved to `backend/` successfully.
-- Attempting the move causes: symlink depth issues in node_modules, port conflicts from orphaned processes, and a 404 "no previewable artifacts" proxy error.
+## Workaround: Stub pattern (CONFIRMED WORKING)
+To give users `frontend/` and `backend/` folders at the root:
+
+1. Keep `artifacts/portfolio/` and `artifacts/api-server/` as thin stubs — containing ONLY `.replit-artifact/artifact.toml`. Strip all source files with `ls | grep -v '\.replit-artifact' | xargs rm -rf`. pnpm ignores dirs without `package.json`.
+2. Create `frontend/` and `backend/` as real pnpm workspace packages (`@workspace/frontend`, `@workspace/backend`).
+3. Update stub artifact.toml run/build commands to use new package names and paths (`frontend/dist/public`, `backend/dist/index.mjs`).
+4. Add `frontend` and `backend` to pnpm-workspace.yaml packages (keep `artifacts/*` for mockup-sandbox etc.).
+5. Fix tsconfig paths — one level shallower: `../../tsconfig.base.json` → `../tsconfig.base.json`, same for lib references.
+6. Delete stale node_modules before `pnpm install` to avoid broken relative symlinks.
+7. Kill orphaned processes on ports before restarting workflows (use /proc/net/tcp inode lookup + kill -9 PID).
+
+## Why symlinks don't work
+Pointing `artifacts/portfolio` → `frontend/` as a symlink does NOT work. The proxy needs a real directory with the artifact.toml stub.
 
 ## How to apply
-- If user asks to restructure `artifacts/portfolio` → `frontend/`, explain the Replit constraint and offer to rename within `artifacts/` instead (e.g. `artifacts/frontend`). But that breaks the path-based ID too — only UUID artifacts can move.
-- The safest "frontend/backend" naming within Replit: keep `artifacts/` structure, explain that `artifacts/portfolio` IS the frontend and `artifacts/api-server` IS the backend.
-- If an artifact was created without a path-based ID (UUID), it CAN be moved to any top-level directory safely.
+Use the stub pattern when user wants `frontend/backend` top-level structure. Do NOT delete the stub dirs — proxy shows "no previewable artifacts" without them.
