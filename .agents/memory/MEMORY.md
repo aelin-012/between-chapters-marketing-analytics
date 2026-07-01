@@ -1,0 +1,1 @@
+- [Replit artifact path constraint](replit-artifact-path-constraint.md) — artifacts with path-based IDs (id = "artifacts/foo") cannot be moved out of artifacts/ — proxy hardcodes the ID as the filesystem path.
