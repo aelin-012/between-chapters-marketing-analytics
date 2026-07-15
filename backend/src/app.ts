@@ -37,7 +37,7 @@ app.use("/api", router);
 
 // Serve frontend static files in production
 app.use(express.static(path.resolve(__dirname, "../../frontend/dist/public")));
-app.get("*", (req, res) => {
+app.get(/(.*)/, (req, res) => {
   res.sendFile(path.resolve(__dirname, "../../frontend/dist/public/index.html"));
 });
 
