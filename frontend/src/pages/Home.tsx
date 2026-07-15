@@ -138,14 +138,19 @@ export default function Home() {
   });
 
   const onSubmit = (values: SurveyValues) => {
+    console.log("[DEBUG] User clicked 'Submit to Validation Lab' with values:", values);
     submitSurvey.mutate(
       { data: { ...values, perfectCelebration: values.perfectCelebration || null, respondentAge: values.respondentAge || null, respondentOccupation: values.respondentOccupation || null, respondentCity: values.respondentCity || null } },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          console.log("[DEBUG] Validation Lab submission response successfully received:", data);
           setSubmitted(true);
           toast({ title: "Response recorded", description: "Thank you for helping shape Between Chapters." });
         },
-        onError: () => toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" }),
+        onError: (err) => {
+          console.error("[DEBUG] Validation Lab submission failed with error:", err);
+          toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
+        },
       }
     );
   };

@@ -1,18 +1,21 @@
 import { Router } from "express";
-import { db, surveyResponsesTable } from "@workspace/db";
+import { db, surveyResponsesTable, validationLogsTable } from "@workspace/db";
 import { desc } from "drizzle-orm";
 import { SubmitSurveyBody } from "@workspace/api-zod";
+import { logger } from "../lib/logger";
 
 const router = Router();
 
 router.post("/survey/responses", async (req, res) => {
   const parseResult = SubmitSurveyBody.safeParse(req.body);
   if (!parseResult.success) {
+    logger.warn({ errors: parseResult.error.issues, body: req.body }, "[DEBUG] Validation Lab submission validation failed");
     res.status(400).json({ error: "Invalid request body", details: parseResult.error.issues });
     return;
   }
 
   const data = parseResult.data;
+  logger.info({ payload: data }, "[DEBUG] Validation Lab submission request received");
 
   const [created] = await db
     .insert(surveyResponsesTable)
@@ -32,10 +35,26 @@ router.post("/survey/responses", async (req, res) => {
     })
     .returning();
 
-  res.status(201).json({
+  const responsePayload = {
     ...created,
     submittedAt: created.submittedAt.toISOString(),
-  });
+  };
+
+  // Insert log of submission into validation_logs table
+  try {
+    await db.insert(validationLogsTable).values({
+      responseId: created.id,
+      payload: JSON.stringify(data),
+      responseOutput: JSON.stringify(responsePayload),
+    });
+    logger.info({ responseId: created.id }, "[DEBUG] Validation log successfully recorded in database");
+  } catch (logErr) {
+    logger.error({ err: logErr }, "[DEBUG] Failed to write to validation_logs table");
+  }
+
+  logger.info({ response: responsePayload }, "[DEBUG] Validation Lab submission response successfully generated");
+
+  res.status(201).json(responsePayload);
 });
 
 router.get("/survey/analytics", async (_req, res) => {

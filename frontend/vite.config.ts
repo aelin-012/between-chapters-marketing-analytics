@@ -4,6 +4,12 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
+try {
+  process.loadEnvFile(path.resolve(import.meta.dirname, ".env"));
+} catch (e) {
+  // Ignore error if file doesn't exist
+}
+
 const rawPort = process.env.PORT;
 
 if (!rawPort) {
@@ -65,6 +71,13 @@ export default defineConfig({
     allowedHosts: true,
     fs: {
       strict: true,
+    },
+    proxy: {
+      "/api": {
+        target: "http://localhost:5050",
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
   preview: {
