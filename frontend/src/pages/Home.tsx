@@ -214,7 +214,7 @@ export default function Home() {
               a living business experiment. Every concept applied immediately. Every decision documented here.
             </p>
             <div className="flex flex-wrap gap-4 mb-16">
-              {["11 Concepts Applied", "Brand Strategy", "Real Customer Research", "Live Analytics Dashboard"].map((pill, i) => (
+              {["11 Concepts Applied", "Brand Strategy", "Real Customer Research"].map((pill, i) => (
                 <motion.span key={pill} whileHover={{ y: -3, scale: 1.05, rotate: i % 2 === 0 ? 1.5 : -1.5 }} className="px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full border border-primary/20 cursor-default shadow-sm hover:shadow-md">{pill}</motion.span>
               ))}
             </div>
@@ -730,7 +730,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <SectionLabel>Concept 11 — Customer Validation</SectionLabel>
           <SectionHeading>Help shape Between Chapters.</SectionHeading>
-          <p className="text-muted-foreground mb-2 max-w-2xl">I'm building this brand publicly. Each question here validates a real marketing hypothesis. Your answers directly influence the strategy — and feed the live analytics dashboard.</p>
+          <p className="text-muted-foreground mb-2 max-w-2xl">I'm building this brand publicly. Each question here validates a real marketing hypothesis. Your answers directly influence the strategy.</p>
           <div className="flex flex-wrap gap-3 mb-10 text-xs text-muted-foreground">
             {["Frequency Analysis", "Demand Segmentation", "Pricing Analysis", "Conversion Trigger", "Decoy Effect Test", "Pain Validation", "Intent Score"].map((h) => (
               <span key={h} className="px-2.5 py-1 bg-transparent border border-foreground/20 rounded-full">{h}</span>
@@ -928,9 +928,10 @@ export default function Home() {
       </Section>
 
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
-      <footer className="py-10 px-6 text-center text-sm text-muted-foreground border-t border-foreground/15">
+      <footer className="py-10 px-6 text-center text-sm text-muted-foreground border-t border-foreground/15 flex flex-col items-center gap-1">
         <p className="font-serif text-base text-foreground mb-1">Between Chapters</p>
-        <p>A Self MBA project. Built publicly. Every decision documented.</p>
+        <p>A Self MBA project. Built publicly. Created by Yoshni Nandha Kishore.</p>
+        <p className="text-xs opacity-60 mt-1">&copy; {new Date().getFullYear()} Between Chapters. All rights reserved.</p>
       </footer>
     </div>
   );
