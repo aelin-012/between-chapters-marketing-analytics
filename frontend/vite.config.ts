@@ -10,7 +10,7 @@ try {
   // Ignore error if file doesn't exist
 }
 
-const rawPort = process.env.PORT || "5050";
+const rawPort = process.env.PORT || "5173";
 const port = Number(rawPort);
 
 if (Number.isNaN(port) || port <= 0) {
@@ -53,7 +53,7 @@ export default defineConfig({
   },
   server: {
     port,
-    strictPort: true,
+    strictPort: false,
     host: "0.0.0.0",
     allowedHosts: true,
     fs: {

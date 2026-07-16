@@ -76,9 +76,9 @@ function OptionButton({ selected, onClick, children, dataTestId }: { selected: b
       type="button"
       onClick={onClick}
       data-testid={dataTestId}
-      className={`px-4 py-3 rounded-lg border text-sm text-left transition-all ${selected
+      className={`px-4 py-3 cursor-pointer rounded-lg border text-sm text-left transition-all ${selected
         ? "border-primary bg-primary/10 text-primary font-medium"
-        : "border-border bg-background hover:border-primary/50 hover:bg-primary/5"
+        : "border-foreground/25 bg-transparent hover:border-primary/50 hover:bg-primary/5"
       }`}
     >
       {selected && <Check className="inline w-3.5 h-3.5 mr-1.5 -mt-0.5" />}
@@ -138,17 +138,17 @@ export default function Home() {
   });
 
   const onSubmit = (values: SurveyValues) => {
-    console.log("[DEBUG] User clicked 'Submit to Validation Lab' with values:", values);
+    console.log("[DEBUG] User clicked 'Submit to Your Chapter' with values:", values);
     submitSurvey.mutate(
-      { data: { ...values, perfectCelebration: values.perfectCelebration || null, respondentAge: values.respondentAge || null, respondentOccupation: values.respondentOccupation || null, respondentCity: values.respondentCity || null } },
+      { data: { ...values, switchTriggers: values.switchTriggers as any, perfectCelebration: values.perfectCelebration || null, respondentAge: values.respondentAge || null, respondentOccupation: values.respondentOccupation || null, respondentCity: values.respondentCity || null } },
       {
         onSuccess: (data) => {
-          console.log("[DEBUG] Validation Lab submission response successfully received:", data);
+          console.log("[DEBUG] Your Chapter submission response successfully received:", data);
           setSubmitted(true);
           toast({ title: "Response recorded", description: "Thank you for helping shape Between Chapters." });
         },
         onError: (err) => {
-          console.error("[DEBUG] Validation Lab submission failed with error:", err);
+          console.error("[DEBUG] Your Chapter submission failed with error:", err);
           toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
         },
       }
@@ -156,24 +156,24 @@ export default function Home() {
   };
 
   const timeline = [
-    { week: "Week 1", concept: "Brand Foundation", note: "Defined the mission, belief system, and the kind of person Between Chapters is for." },
-    { week: "Week 2", concept: "Customer Avatar", note: "Mapped Anika — the ideal customer — in granular detail across demographics, psychographics, and motivations." },
-    { week: "Week 3", concept: "Buying Journey", note: "Traced every stage from trigger to post-purchase, identifying exactly where trust breaks down." },
-    { week: "Week 4", concept: "Behavioural Biases", note: "Selected Peak-End Rule, Pratfall Effect, and Reciprocity as the three lenses that shape every event design." },
-    { week: "Week 5", concept: "JTBD Framework", note: "Articulated the functional, emotional, and social jobs the customer is truly hiring Between Chapters to do." },
-    { week: "Week 6", concept: "Market Size", note: "Built a bottom-up TAM/SAM/SOM to validate the business case before any real investment." },
-    { week: "Week 7", concept: "STP Strategy", note: "Chose Intentional Celebrators as the primary segment and wrote the positioning statement." },
-    { week: "Week 8", concept: "Brand Identity", note: "Defined the Creator archetype, personality dimensions, tone of voice, and visual direction." },
-    { week: "Week 9", concept: "Value Proposition", note: "Mapped customer pains and gains to specific product and service solutions." },
-    { week: "Week 10", concept: "Pricing Strategy", note: "Applied the Decoy Effect to engineer a three-tier architecture that makes the target package feel like obvious value." },
-    { week: "Week 11", concept: "Customer Validation", note: "Running live now — the Validation Lab below tests real hypotheses with real people." },
+    { week: "Concept 1", concept: "Brand Foundation", note: "Defined the mission, belief system, and the kind of person Between Chapters is for." },
+    { week: "Concept 2", concept: "Customer Avatar", note: "Mapped Anika — the ideal customer — in granular detail across demographics, psychographics, and motivations." },
+    { week: "Concept 3", concept: "Buying Journey", note: "Traced every stage from trigger to post-purchase, identifying exactly where trust breaks down." },
+    { week: "Concept 4", concept: "Behavioural Biases", note: "Selected Peak-End Rule, Pratfall Effect, and Reciprocity as the three lenses that shape every event design." },
+    { week: "Concept 5", concept: "JTBD Framework", note: "Articulated the functional, emotional, and social jobs the customer is truly hiring Between Chapters to do." },
+    { week: "Concept 6", concept: "Market Size", note: "Built a bottom-up TAM/SAM/SOM to validate the business case before any real investment." },
+    { week: "Concept 7", concept: "STP Strategy", note: "Chose Intentional Celebrators as the primary segment and wrote the positioning statement." },
+    { week: "Concept 8", concept: "Brand Identity", note: "Defined the Creator archetype, personality dimensions, tone of voice, and visual direction." },
+    { week: "Concept 9", concept: "Value Proposition", note: "Mapped customer pains and gains to specific product and service solutions." },
+    { week: "Concept 10", concept: "Pricing Strategy", note: "Applied the Decoy Effect to engineer a three-tier architecture that makes the target package feel like obvious value." },
+    { week: "Concept 11", concept: "Customer Validation", note: "Running live now — the Your Chapter below tests real hypotheses with real people." },
   ];
 
   return (
-    <div className="min-h-screen bg-background font-sans">
+    <div className="min-h-screen bg-transparent font-sans">
 
       {/* ── Navigation ─────────────────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
+      <nav className="sticky top-0 z-50 bg-primary/5 backdrop-blur-md border-b border-foreground/20">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <span className="font-serif text-lg text-foreground tracking-tight">Between Chapters</span>
           <div className="hidden md:flex gap-6 text-sm">
@@ -181,8 +181,7 @@ export default function Home() {
             <a href="#timeline" className="text-muted-foreground hover:text-foreground transition-colors">Journey</a>
             <a href="#brand" className="text-muted-foreground hover:text-foreground transition-colors">The Brand</a>
             <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-            <a href="#survey" className="text-muted-foreground hover:text-foreground transition-colors">Validation Lab</a>
-            <Link href="/analytics" className="text-primary font-medium">Analytics</Link>
+            <a href="#survey" className="text-muted-foreground hover:text-foreground transition-colors">Your Chapter</a>
           </div>
         </div>
       </nav>
@@ -196,11 +195,11 @@ export default function Home() {
               Building<br />Between Chapters
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed mb-10">
-              A real event brand built using marketing principles from Self MBA. Not a homework assignment —
+              A hypothetical event brand built using marketing principles from Self MBA. Not a homework assignment —
               a living business experiment. Every concept applied immediately. Every decision documented here.
             </p>
-            <div className="flex flex-wrap gap-3 mb-12">
-              {["11 Concepts Applied", "29-page Brand Strategy", "Real Customer Research", "Live Analytics Dashboard"].map((pill) => (
+            <div className="flex flex-wrap gap-4 mb-16">
+              {["11 Concepts Applied", "Brand Strategy", "Real Customer Research", "Live Analytics Dashboard"].map((pill) => (
                 <span key={pill} className="px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full border border-primary/20">{pill}</span>
               ))}
             </div>
@@ -212,14 +211,14 @@ export default function Home() {
       </section>
 
       {/* ── About ──────────────────────────────────────────────────────────── */}
-      <Section id="about" className="bg-card border-y border-border/40">
+      <Section id="about" className="bg-transparent border-y border-foreground/15">
         <div className="max-w-3xl mx-auto">
           <SectionLabel>About This Project</SectionLabel>
           <SectionHeading>Instead of taking notes, I built a company.</SectionHeading>
           <div className="space-y-5 text-muted-foreground leading-relaxed text-lg">
             <p>
               Most people do Self MBA and collect insights. I wanted to do something different —
-              apply every marketing concept immediately to a real brand as I learned it.
+              apply every marketing concept immediately to a brand as I learned it.
             </p>
             <p>
               Between Chapters is the result. It's a hypothetical event brand for Bangalore's young adults
@@ -237,7 +236,7 @@ export default function Home() {
       <Section id="timeline">
         <div className="max-w-3xl mx-auto">
           <SectionLabel>The Journey</SectionLabel>
-          <SectionHeading>11 weeks. 11 decisions.</SectionHeading>
+          <SectionHeading>11 concepts. 11 decisions.</SectionHeading>
           <div className="mt-12 relative">
             <div className="absolute left-[7px] top-2 bottom-2 w-px bg-border" />
             <div className="space-y-8">
@@ -250,7 +249,7 @@ export default function Home() {
                   transition={{ delay: i * 0.04, duration: 0.4 }}
                   className="pl-8 relative"
                 >
-                  <div className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-primary bg-background" />
+                  <div className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent" />
                   <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-0.5">{item.week}</p>
                   <p className="font-serif text-lg text-foreground">{item.concept}</p>
                   <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">{item.note}</p>
@@ -262,9 +261,9 @@ export default function Home() {
       </Section>
 
       {/* ── Brand Foundation ───────────────────────────────────────────────── */}
-      <Section id="brand" className="bg-card border-y border-border/40">
+      <Section id="brand" className="bg-transparent border-y border-foreground/15">
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 1 — Brand Foundation</SectionLabel>
+          <SectionLabel>Concept 1 — Brand Foundation</SectionLabel>
           <SectionHeading>Why Between Chapters exists.</SectionHeading>
           <div className="grid md:grid-cols-3 gap-6 mt-10">
             {[
@@ -272,7 +271,7 @@ export default function Home() {
               { label: "02 — The Person", text: "Her name is Anika. On a Tuesday between 2–4pm, she's working from a café with an iced coffee beside her while making Pinterest boards she'll never admit she spends hours on. She saves film-inspired birthday decor, romantic tablescapes, and cozy wedding reels." },
               { label: "03 — The Belief", text: "People don't remember perfect events — they remember how a moment made them feel, which is why every celebration should feel like a memory before it even becomes one." },
             ].map((card) => (
-              <div key={card.label} className="bg-background p-7 rounded-xl border border-border/60">
+              <div key={card.label} className="bg-foreground/[0.03] p-7 rounded-xl border border-foreground/20">
                 <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-3">{card.label}</p>
                 <p className="text-muted-foreground leading-relaxed text-sm">{card.text}</p>
               </div>
@@ -284,14 +283,14 @@ export default function Home() {
       {/* ── Customer Avatar ─────────────────────────────────────────────────── */}
       <Section>
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 2 — Customer Avatar</SectionLabel>
+          <SectionLabel>Concept 2 — Customer Avatar</SectionLabel>
           <SectionHeading>Meet Anika.</SectionHeading>
           <p className="text-muted-foreground mb-10 max-w-2xl">"Between Chapters is for the 20-year-old Bangalore girl who saves birthday-table setups on Pinterest at 1am, spends more time choosing the vibe than the venue, and believes the feeling of a celebration matters more than how expensive it looks."</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div className="bg-card p-6 rounded-xl border border-border/60">
+            <div className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
               <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Demographics</p>
               <div className="space-y-2 text-sm">
-                {[["Age", "21"], ["City", "Bangalore"], ["Stage", "Final-year design student / social media intern"], ["Monthly budget", "₹12,000–₹18,000"], ["Style", "Intentional"]].map(([k, v]) => (
+                {[["Customer Name", "Anika"], ["Age", "21"], ["City", "Bangalore"], ["College or Job", "Final-year design student / social media intern"], ["Monthly spending money (their own, not family)", "₹12,000–₹18,000"], ["One word that describes how they dress", "Intentional"]].map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-4">
                     <span className="text-muted-foreground">{k}</span>
                     <span className="text-foreground font-medium text-right">{v}</span>
@@ -299,47 +298,84 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className="bg-card p-6 rounded-xl border border-border/60">
-              <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Apps (in order)</p>
-              <div className="flex flex-wrap gap-2">
-                {["Instagram", "Pinterest", "WhatsApp", "Spotify"].map((app, i) => (
-                  <span key={app} className="px-3 py-1.5 bg-background rounded-full text-sm border border-border">
-                    <span className="text-muted-foreground text-xs mr-1">{i + 1}.</span>{app}
-                  </span>
-                ))}
+            <div className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+              <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">The Behavior</p>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Apps (in order)</span>
+                  <span className="text-foreground font-medium text-right">Insta, Pinterest, WhatsApp, Spotify</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Drinks at</span>
+                  <span className="text-foreground font-medium text-right">Blinkit / Cafés (2pm matcha)</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Checks nutrition</span>
+                  <span className="text-foreground font-medium text-right">For influencer-backed foods</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">IG Influences</span>
+                  <span className="text-foreground font-medium text-right">Aesthetic vloggers, Pinterest</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Screen time</span>
+                  <span className="text-foreground font-medium text-right">6+ hrs (blames "research")</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Financial logic</span>
+                  <span className="text-foreground font-medium text-right">"Girl math" for iced coffees</span>
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-3 mt-5">Buys drinks at</p>
-              <p className="text-sm text-foreground">Blinkit / Cafés — iced coffee or matcha at 2pm</p>
             </div>
-            <div className="bg-card p-6 rounded-xl border border-border/60">
+            <div className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
               <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Psychographics</p>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <p className="text-xs text-muted-foreground mb-0.5">Biggest fear</p>
-                  <p className="text-foreground">"Living an ordinary, emotionally forgettable life where nothing feels meaningful."</p>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Deepest Fear</span>
+                  <span className="text-foreground font-medium text-right">An emotionally forgettable life</span>
                 </div>
-                <div>
-                  <p className="text-xs text-muted-foreground mb-0.5">Wants to be seen as</p>
-                  <p className="text-foreground">Effortlessly tasteful</p>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Seen as</span>
+                  <span className="text-foreground font-medium text-right">Effortlessly tasteful</span>
                 </div>
-                <div>
-                  <p className="text-xs text-muted-foreground mb-0.5">Primary motive</p>
-                  <p className="text-foreground">Affiliation — belonging to a certain kind of emotional life</p>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Motive</span>
+                  <span className="text-foreground font-medium text-right">Aesthetic affiliation</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">Embarrassed by</span>
+                  <span className="text-foreground font-medium text-right">Loud, "cringe" party decor</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">"Healthy" choice</span>
+                  <span className="text-foreground font-medium text-right">"Romanticizing my life"</span>
+                </div>
+                <div className="flex justify-between gap-2">
+                  <span className="text-muted-foreground">11pm Reality</span>
+                  <span className="text-foreground font-medium text-right">Doomscrolls Pinterest tablescapes</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-6 bg-primary/8 border border-primary/20 rounded-xl p-7">
+          <div className="mt-6 bg-primary/5 border border-primary/20 rounded-xl p-7">
             <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-2">Deep Fear</p>
             <p className="text-foreground font-serif text-xl italic leading-relaxed">"I never want to become the person who rushes through life so fast that even their happiest moments feel emotionally empty and forgettable."</p>
+          </div>
+          <div className="mt-4 bg-primary/5 border border-primary/20 rounded-xl p-7">
+            <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-2">Primary Motive: Affiliation</p>
+            <p className="text-foreground font-serif text-xl italic leading-relaxed">"She buys in to emotionally connect with an intimate, cinematic lifestyle—and to ensure her celebrations reflect her inner circle's aesthetic identity."</p>
+          </div>
+          <div className="mt-4 bg-primary/5 border border-primary/20 rounded-xl p-7">
+            <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-2">Smallest Viable Audience Statement</p>
+            <p className="text-foreground font-serif text-xl italic leading-relaxed">“Between Chapters is for the 20-year-old Bangalore girl who saves birthday-table setups on Pinterest at 1am, spends more time choosing the vibe than the venue, and believes the feeling of a celebration matters more than how expensive it looks.”</p>
           </div>
         </div>
       </Section>
 
       {/* ── Buying Journey ─────────────────────────────────────────────────── */}
-      <Section className="bg-card border-y border-border/40">
+      <Section className="bg-transparent border-y border-foreground/15">
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 3 — Buying Journey</SectionLabel>
+          <SectionLabel>Concept 3 — Buying Journey</SectionLabel>
           <SectionHeading>Five stages. One truth: emotion drives everything.</SectionHeading>
           <div className="mt-10 space-y-4">
             {[
@@ -365,7 +401,7 @@ export default function Home() {
                 highlight: true,
               },
             ].map((s) => (
-              <div key={s.stage} className={`p-6 rounded-xl border ${s.highlight ? "bg-primary/8 border-primary/25" : "bg-background border-border/60"}`}>
+              <div key={s.stage} className={`p-6 rounded-xl border ${s.highlight ? "bg-primary/5 border-primary/25" : "bg-transparent border-foreground/20"}`}>
                 <div className="flex flex-wrap gap-3 items-baseline mb-2">
                   <p className={`text-xs font-semibold tracking-wider uppercase ${s.highlight ? "text-primary" : "text-muted-foreground"}`}>{s.stage}</p>
                   <p className={`font-serif text-lg ${s.highlight ? "text-primary" : "text-foreground"}`}>{s.label}</p>
@@ -380,7 +416,7 @@ export default function Home() {
       {/* ── Behavioural Biases ──────────────────────────────────────────────── */}
       <Section>
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 4 — Behavioural Biases</SectionLabel>
+          <SectionLabel>Concept 4 — Behavioural Biases</SectionLabel>
           <SectionHeading>Three biases. One emotional system.</SectionHeading>
           <div className="grid md:grid-cols-3 gap-6 mt-10">
             {[
@@ -400,7 +436,7 @@ export default function Home() {
                 action: "Free disposable cameras at events, edited candid photos sent after, handwritten thank-you cards, small personalized add-ons without charging extra. Clients feel so much goodwill they naturally share, recommend, and repost — without being asked.",
               },
             ].map((bias) => (
-              <div key={bias.name} className="bg-card p-6 rounded-xl border border-border/60">
+              <div key={bias.name} className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
                 <span className="inline-block px-2.5 py-1 text-xs font-semibold text-primary bg-primary/10 rounded-full mb-4">{bias.badge}</span>
                 <h3 className="font-serif text-xl text-foreground mb-1">{bias.name}</h3>
                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-3">Applied at: {bias.where}</p>
@@ -408,7 +444,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="mt-6 bg-muted/40 rounded-xl border border-border/40 p-6">
+          <div className="mt-6 bg-muted/40 rounded-xl border border-foreground/15 p-6">
             <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-2">Bias Between Chapters will NOT use</p>
             <p className="font-serif text-lg text-foreground mb-2">Reactance Theory</p>
             <p className="text-sm text-muted-foreground leading-relaxed">No fake urgency. No 'only 2 slots left!!!'. No manipulative exclusivity. People should feel understood, not pressured. Overusing Reactance Theory would make the brand feel transactional instead of intimate and memory-driven.</p>
@@ -417,9 +453,9 @@ export default function Home() {
       </Section>
 
       {/* ── JTBD ───────────────────────────────────────────────────────────── */}
-      <Section className="bg-card border-y border-border/40">
+      <Section className="bg-transparent border-y border-foreground/15">
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 5 — Jobs To Be Done</SectionLabel>
+          <SectionLabel>Concept 5 — Jobs To Be Done</SectionLabel>
           <SectionHeading>What is she actually hiring Between Chapters to do?</SectionHeading>
           <div className="grid md:grid-cols-3 gap-6 mt-10">
             {[
@@ -427,15 +463,15 @@ export default function Home() {
               { type: "Emotional Job", text: "When I feel disconnected from the fast and performative nature of most celebrations, I want to experience a warm and personal event, so I can feel emotionally present and genuinely connected to the people around me." },
               { type: "Social Job", text: "When I host a celebration or event, I want it to feel unique, cinematic, and thoughtfully curated, so I can express my identity and be remembered for creating meaningful experiences." },
             ].map((job) => (
-              <div key={job.type} className="bg-background p-6 rounded-xl border border-border/60">
+              <div key={job.type} className="bg-foreground/[0.03] p-6 rounded-xl border border-foreground/20">
                 <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-3">{job.type}</p>
-                <p className="text-foreground leading-relaxed text-sm italic font-serif text-base">"{job.text}"</p>
+                <p className="text-foreground leading-relaxed italic font-serif text-lg">"{job.text}"</p>
               </div>
             ))}
           </div>
-          <div className="mt-8 p-6 rounded-xl border border-border/60 bg-background">
+          <div className="mt-8 p-6 rounded-xl border border-foreground/20 bg-transparent">
             <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-2">Maslow's Hierarchy</p>
-            <p className="text-foreground leading-relaxed text-sm">Between Chapters primarily operates on <strong>Level 3 — Love & Belonging</strong>, while also touching Level 4 — Esteem. The brand helps people feel emotionally connected, seen, and present with the people they care about. The aesthetic and cinematic nature of experiences also gives customers a sense of identity and social expression.</p>
+            <p className="text-foreground leading-relaxed text-sm">Between Chapters primarily operates on <strong>Level 3 — Love & Belonging</strong>, while also touching <strong>Level 4 — Esteem</strong>. The brand helps people feel emotionally connected, seen, and present with the people they care about. The aesthetic and cinematic nature of experiences also gives customers a sense of identity and social expression.</p>
           </div>
         </div>
       </Section>
@@ -443,7 +479,7 @@ export default function Home() {
       {/* ── Market Size ────────────────────────────────────────────────────── */}
       <Section>
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 6 — Market Size</SectionLabel>
+          <SectionLabel>Concept 6 — Market Size</SectionLabel>
           <SectionHeading>How big is the opportunity?</SectionHeading>
           <div className="grid md:grid-cols-3 gap-6 mt-10">
             {[
@@ -451,7 +487,7 @@ export default function Home() {
               { label: "SAM", sublabel: "Serviceable Available Market", value: "11.25", prefix: "₹", suffix: " Cr/yr", note: "75,000 culturally curious, highly online Bangaloreans. 3 paid experiences/year × ₹500 average ticket." },
               { label: "SOM", sublabel: "Obtainable Market (Year 1)", value: "48", prefix: "₹", suffix: " L/yr", note: "4 events/month × 200 attendees × ₹500 ticket. Realistic first-year target before memberships, partnerships, or multi-city expansion." },
             ].map((item) => (
-              <div key={item.label} className="bg-card p-8 rounded-xl border border-border/60 text-center">
+              <div key={item.label} className="bg-foreground/[0.03] p-8 rounded-xl border border-foreground/20 text-center">
                 <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-1">{item.label}</p>
                 <p className="text-xs text-muted-foreground mb-4">{item.sublabel}</p>
                 <p className="text-4xl font-serif text-foreground mb-4">
@@ -461,7 +497,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="mt-6 bg-muted/30 rounded-xl border border-border/40 p-6">
+          <div className="mt-6 bg-muted/30 rounded-xl border border-foreground/15 p-6">
             <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">One Nudge</p>
             <p className="text-sm text-muted-foreground leading-relaxed">Between Chapters grows through cultural social proof, not mass advertising. The goal is not maximum reach. The goal is becoming "the thing interesting people go to." If 15–20 culturally influential people in Bangalore consistently attend and post, the brand gains visibility inside tightly connected social circles where discovery is driven by taste and identity.</p>
           </div>
@@ -469,29 +505,80 @@ export default function Home() {
       </Section>
 
       {/* ── STP ────────────────────────────────────────────────────────────── */}
-      <Section className="bg-card border-y border-border/40">
+      <Section className="bg-transparent border-y border-foreground/15">
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 7 — STP Strategy</SectionLabel>
+          <SectionLabel>Concept 7 — STP Strategy</SectionLabel>
           <SectionHeading>Segmentation, Targeting, Positioning.</SectionHeading>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+          <p className="mt-10 text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Between Chapters' Segmentation</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { segment: "Intentional Celebrators", chosen: true, desc: "Young adults who value emotion over extravagance. Celebrate milestones with close friends or a partner. Authenticity and aesthetics over status." },
               { segment: "Social Trend Chasers", chosen: false, desc: "Love trendy, Instagram-worthy setups. Loyalty shifts quickly as trends evolve — not a stable base for a brand built on emotional depth." },
               { segment: "Convenience Seekers", chosen: false, desc: "Busy professionals who want someone else to organize with minimal effort. They prioritize speed and price over emotional storytelling." },
               { segment: "Luxury Experience Buyers", chosen: false, desc: "Motivated by exclusivity and status, not meaningful connection. Their values don't align with the brand's purpose." },
             ].map((s) => (
-              <div key={s.segment} className={`p-5 rounded-xl border ${s.chosen ? "bg-primary/8 border-primary/30" : "bg-background border-border/60 opacity-75"}`}>
+              <div key={s.segment} className={`p-5 rounded-xl border ${s.chosen ? "bg-primary/5 border-primary/30" : "bg-transparent border-foreground/20 opacity-75"}`}>
                 {s.chosen && <span className="inline-block px-2 py-0.5 text-xs font-semibold bg-primary text-primary-foreground rounded-full mb-3">Chosen</span>}
                 <p className={`font-serif text-base mb-2 ${s.chosen ? "text-foreground" : "text-muted-foreground"}`}>{s.segment}</p>
                 <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
-          <div className="mt-8 border-l-2 border-primary pl-6">
+          <div className="mt-12">
+            <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Between Chapters' Targeting Decision: Kotler's Five Criteria</p>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[
+                { title: "Measurable", text: "Yes. Easily identified via demographics (20–30) and niche aesthetic interests on Instagram and Pinterest." },
+                { title: "Substantial", text: "Yes. Urban Gen Z rapidly prioritizes spending on meaningful experiences over material goods." },
+                { title: "Accessible", text: "Yes. Highly reachable via curated cafés, Pinterest moodboards, and creative local communities." },
+                { title: "Differentiable", text: "Yes. They seek emotional meaning and aesthetic depth—distinct from luxury or trend chasers." },
+                { title: "Actionable", text: "Yes. Ready to buy aesthetic packages, bespoke storytelling, and community-driven events." },
+              ].map((c, i) => (
+                <div key={i} className="p-4 bg-foreground/[0.03] backdrop-blur-sm border border-foreground/20 rounded-xl hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="flex items-center justify-center shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">{i + 1}</span>
+                    <p className="font-serif text-sm font-medium text-foreground">{c.title}</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{c.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-12 border-l-2 border-primary pl-6">
             <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-2">Positioning Statement</p>
             <p className="font-serif text-lg text-foreground italic leading-relaxed">
               "For young adults who want to celebrate life's milestones in a meaningful and aesthetically beautiful way, Between Chapters is the curated celebration experience brand that transforms ordinary occasions into intimate, story-worthy memories, because every experience is thoughtfully designed around emotion, connection, and personal identity rather than generic event packages."
             </p>
+          </div>
+          <div className="mt-12">
+            <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Positioning Tests</p>
+            <div className="grid md:grid-cols-3 gap-5">
+              {[
+                { title: "Blank Test", status: "Passes", text: "Generic planners cannot honestly claim our emotional, identity-driven approach without entirely changing their business model." },
+                { title: "Opposite Test", status: "Passes", text: "Competitors can easily position around large-scale, flashy, or convenience-first events, creating a strong contrast." },
+                { title: "Gut Test", status: "Passes", text: "Our positioning instinctively drives every decision—from décor to partnerships—toward intimate meaning rather than flashy spectacle." },
+              ].map((test, i) => (
+                <div key={i} className="bg-foreground/[0.03] backdrop-blur-sm border border-foreground/20 p-5 rounded-xl hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-serif text-base font-medium text-foreground">{test.title}</p>
+                    <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">{test.status}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{test.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-16 bg-primary/5 border border-primary/20 rounded-2xl p-8 md:p-12 text-center">
+            <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-3">Brand Essence</p>
+            <p className="font-serif text-4xl md:text-5xl text-foreground mb-6">Meaningful</p>
+            <div className="space-y-3 max-w-5xl mx-auto">
+              <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
+                Between Chapters doesn't sell decorations or events—we design meaningful moments that outlast the&nbsp;celebration.
+              </p>
+              <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
+                Every touchpoint—from visual identity to customer experience—must relentlessly reinforce this single&nbsp;essence.
+              </p>
+            </div>
           </div>
         </div>
       </Section>
@@ -499,11 +586,11 @@ export default function Home() {
       {/* ── Brand Identity ──────────────────────────────────────────────────── */}
       <Section>
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 8 — Brand Identity</SectionLabel>
+          <SectionLabel>Concept 8 — Brand Identity</SectionLabel>
           <SectionHeading>The Creator archetype meets quiet confidence.</SectionHeading>
           <div className="grid md:grid-cols-2 gap-8 mt-10">
             <div className="space-y-6">
-              <div className="bg-card p-6 rounded-xl border border-border/60">
+              <div className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
                 <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Personality (Jennifer Aaker)</p>
                 {[["Sincerity", 9], ["Competence", 8], ["Sophistication", 8], ["Excitement", 7], ["Ruggedness", 2]].map(([trait, score]) => (
                   <div key={trait as string} className="mb-3">
@@ -517,12 +604,12 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <div className="bg-card p-6 rounded-xl border border-border/60">
+              <div className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
                 <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-3">Visual Direction</p>
                 <div className="flex gap-2 mb-3">
                   {[["#F9F6F0", "Warm Ivory"], ["#8A9E8C", "Sage Green"], ["#C4603A", "Terracotta"], ["#D4C4A0", "Dusty Beige"], ["#1A1008", "Espresso"]].map(([hex, name]) => (
                     <div key={hex} className="flex-1 text-center">
-                      <div className="h-10 rounded-md mb-1 border border-border/40" style={{ background: hex }} />
+                      <div className="h-10 rounded-md mb-1 border border-foreground/15" style={{ background: hex }} />
                       <p className="text-[9px] text-muted-foreground leading-tight">{name}</p>
                     </div>
                   ))}
@@ -531,20 +618,20 @@ export default function Home() {
               </div>
             </div>
             <div className="space-y-4">
-              <div className="bg-card p-6 rounded-xl border border-border/60">
+              <div className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
                 <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-4">Tone of Voice</p>
                 <div className="space-y-3">
-                  <div className="p-4 bg-background rounded-lg border border-border/60">
+                  <div className="p-4 bg-foreground/[0.03] rounded-lg border border-foreground/20">
                     <p className="text-xs text-green-600 font-semibold mb-2">In voice</p>
                     <p className="text-sm text-foreground italic">"Some celebrations don't need a ballroom. Just your favourite people, soft music, flowers on the table, and a moment that feels entirely yours."</p>
                   </div>
-                  <div className="p-4 bg-background rounded-lg border border-border/60">
+                  <div className="p-4 bg-foreground/[0.03] rounded-lg border border-foreground/20">
                     <p className="text-xs text-destructive font-semibold mb-2">Off voice</p>
                     <p className="text-sm text-muted-foreground line-through">"BIGGEST PARTY OF THE YEAR! LIMITED SLOTS — Book NOW before prices go up!! Most EPIC celebrations in Bangalore!!"</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-card p-6 rounded-xl border border-border/60">
+              <div className="bg-foreground/[0.03] backdrop-blur-sm p-6 rounded-xl border border-foreground/20 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
                 <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-2">The Acid Test</p>
                 <p className="text-sm text-muted-foreground italic leading-relaxed">"Between Chapters is the friend who remembers everyone's favourite flowers, spends Saturday mornings wandering through cafés and local markets collecting inspiration, and would never choose something simply because it's trendy if it doesn't make people feel genuinely connected."</p>
               </div>
@@ -554,9 +641,9 @@ export default function Home() {
       </Section>
 
       {/* ── Value Proposition ──────────────────────────────────────────────── */}
-      <Section className="bg-card border-y border-border/40">
+      <Section className="bg-transparent border-y border-foreground/15">
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 9 — Value Proposition</SectionLabel>
+          <SectionLabel>Concept 9 — Value Proposition</SectionLabel>
           <SectionHeading>Matching pains to solutions.</SectionHeading>
           <div className="grid md:grid-cols-3 gap-6 mt-10">
             {[
@@ -564,17 +651,18 @@ export default function Home() {
               { label: "Between Chapters Solutions", color: "text-primary", items: ["Every event begins with the client's story, interests, and personality before any design decision", "Between Chapters manages creative direction, vendor coordination, styling, and execution end-to-end", "Experiences designed around emotion and intimate moments — not social media trends"] },
               { label: "Customer Gains", color: "text-green-600", items: ["A celebration that feels deeply personal and reflects their personality", "Beautiful aesthetics that feel timeless rather than trendy", "An effortless planning experience while still feeling involved in the creative process"] },
             ].map((col) => (
-              <div key={col.label} className="bg-background p-6 rounded-xl border border-border/60">
+              <div key={col.label} className="bg-foreground/[0.03] p-6 rounded-xl border border-foreground/20">
                 <p className={`text-xs font-semibold tracking-wider uppercase mb-4 ${col.color}`}>{col.label}</p>
                 <ul className="space-y-3">
                   {col.items.map((item, i) => (
-                    <li key={i} className="text-sm text-muted-foreground leading-relaxed pl-3 border-l border-border">{item}</li>
+                    <li key={i} className="text-sm text-muted-foreground leading-relaxed pl-3 border-l border-foreground/25">{item}</li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
           <div className="mt-8 border-l-2 border-primary pl-6">
+            <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-2">Value Proposition</p>
             <p className="font-serif text-lg text-foreground italic leading-relaxed">"For young adults like Anika who want to celebrate life's milestones in a way that feels deeply personal rather than performative, Between Chapters is a bespoke celebration design brand that transforms meaningful moments into beautifully curated experiences, because every event is built around the client's story — not a template."</p>
           </div>
         </div>
@@ -583,7 +671,7 @@ export default function Home() {
       {/* ── Pricing ────────────────────────────────────────────────────────── */}
       <Section id="pricing">
         <div className="max-w-5xl mx-auto">
-          <SectionLabel>Week 10 — Pricing Strategy</SectionLabel>
+          <SectionLabel>Concept 10 — Pricing Strategy</SectionLabel>
           <SectionHeading>Three tiers. One psychological nudge.</SectionHeading>
           <p className="text-muted-foreground mb-2 max-w-2xl">The Decoy Effect: The Chapter (₹17,900) exists to make The Story (₹14,500) feel like exceptional value — the same emotional experience at ₹3,400 less.</p>
           <p className="text-xs text-muted-foreground mb-10">Cost floor: ₹9,100 (₹7,000 cost + 30% margin) &nbsp;·&nbsp; Value-based target: ₹14,500 &nbsp;·&nbsp; Anchored by: ₹17,900</p>
@@ -593,7 +681,7 @@ export default function Home() {
               { name: "The Story", price: "₹14,500", badge: "Most Popular", desc: "Enhanced styling, personalization, planning and photography coordination.", features: ["Everything in The Moment", "Enhanced personalization", "Photography coordination", "Creative theme development"] },
               { name: "The Chapter", price: "₹17,900", badge: "Decoy", desc: "Premium decor upgrades, multiple activity zones, and extended planning support.", features: ["Everything in The Story", "Premium decor upgrades", "Multiple activity zones", "Extended planning support"] },
             ].map((pkg) => (
-              <div key={pkg.name} className={`p-7 rounded-xl border ${pkg.badge === "Most Popular" ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-border/60 bg-card"}`}>
+              <div key={pkg.name} className={`p-7 rounded-xl border ${pkg.badge === "Most Popular" ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-foreground/20 bg-transparent"}`}>
                 {pkg.badge && <span className={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full mb-4 ${pkg.badge === "Most Popular" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{pkg.badge}</span>}
                 <h3 className="font-serif text-xl text-foreground mb-1">{pkg.name}</h3>
                 <p className="text-3xl font-serif text-foreground mb-2">{pkg.price}</p>
@@ -604,13 +692,13 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="mt-5 bg-muted/30 rounded-xl border border-border/40 p-6 flex flex-wrap gap-6 items-center justify-between">
+          <div className="mt-5 bg-muted/30 rounded-xl border border-foreground/15 p-6 flex flex-col lg:flex-row gap-4 lg:gap-6 lg:items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">Introductory Offer</p>
               <p className="font-serif text-xl text-foreground">First Celebration — <span className="text-primary">₹13,500</span></p>
               <p className="text-sm text-muted-foreground mt-1">Mini personalization, signature styling, one premium add-on. Save ~7% vs regular pricing.</p>
             </div>
-            <div className="text-right">
+            <div className="text-left lg:text-right">
               <p className="text-xs text-muted-foreground">Reduces hesitation for</p>
               <p className="text-sm text-foreground font-medium">first-time customers</p>
             </div>
@@ -618,31 +706,28 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ── Validation Lab ─────────────────────────────────────────────────── */}
-      <Section id="survey" className="bg-card border-y border-border/40">
+      {/* ── Your Chapter ─────────────────────────────────────────────────── */}
+      <Section id="survey" className="bg-transparent border-y border-foreground/15">
         <div className="max-w-3xl mx-auto">
-          <SectionLabel>Week 11 — Customer Validation</SectionLabel>
+          <SectionLabel>Concept 11 — Customer Validation</SectionLabel>
           <SectionHeading>Help shape Between Chapters.</SectionHeading>
           <p className="text-muted-foreground mb-2 max-w-2xl">I'm building this brand publicly. Each question here validates a real marketing hypothesis. Your answers directly influence the strategy — and feed the live analytics dashboard.</p>
           <div className="flex flex-wrap gap-3 mb-10 text-xs text-muted-foreground">
             {["Frequency Analysis", "Demand Segmentation", "Pricing Analysis", "Conversion Trigger", "Decoy Effect Test", "Pain Validation", "Intent Score"].map((h) => (
-              <span key={h} className="px-2.5 py-1 bg-background border border-border/60 rounded-full">{h}</span>
+              <span key={h} className="px-2.5 py-1 bg-transparent border border-foreground/20 rounded-full">{h}</span>
             ))}
           </div>
 
           {submitted ? (
-            <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="bg-background rounded-xl border border-border/60 p-12 text-center">
+            <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="bg-transparent rounded-xl border border-foreground/20 p-12 text-center">
               <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center mx-auto mb-6">
                 <Check className="w-7 h-7 text-primary" />
               </div>
               <h3 className="font-serif text-2xl text-foreground mb-2">Response Recorded</h3>
               <p className="text-muted-foreground mb-8 max-w-sm mx-auto">Thank you. Your answers will shape the next version of Between Chapters.</p>
-              <Link href="/analytics" className="inline-flex items-center gap-2 text-primary font-medium hover:underline" data-testid="link-view-analytics">
-                View live analytics dashboard
-              </Link>
             </motion.div>
           ) : (
-            <div className="bg-background rounded-xl border border-border/60 p-8">
+            <div className="bg-transparent rounded-xl border border-foreground/20 p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
 
@@ -732,7 +817,7 @@ export default function Home() {
                           { val: "chapter", name: "The Chapter", price: "₹17,900", desc: "Premium decor, multiple zones + extended support" },
                         ].map((pkg) => (
                           <button type="button" key={pkg.val} onClick={() => field.onChange(pkg.val)} data-testid={`option-package-${pkg.val}`}
-                            className={`p-4 rounded-lg border text-left transition-all ${field.value === pkg.val ? "border-primary bg-primary/10 ring-1 ring-primary/20" : "border-border/60 bg-background hover:border-primary/40"}`}>
+                            className={`p-4 cursor-pointer rounded-lg border text-left transition-all ${field.value === pkg.val ? "border-primary bg-primary/10 ring-1 ring-primary/20" : "border-foreground/20 bg-transparent hover:border-primary/40"}`}>
                             <p className={`font-medium text-sm mb-1 ${field.value === pkg.val ? "text-primary" : "text-foreground"}`}>{pkg.name}</p>
                             <p className="font-serif text-xl text-foreground mb-1">{pkg.price}</p>
                             <p className="text-xs text-muted-foreground leading-snug">{pkg.desc}</p>
@@ -808,8 +893,8 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={submitSurvey.isPending} data-testid="button-submit-survey">
-                    {submitSurvey.isPending ? "Submitting..." : "Submit to Validation Lab"}
+                  <Button type="submit" className="w-full cursor-pointer" disabled={submitSurvey.isPending} data-testid="button-submit-survey">
+                    {submitSurvey.isPending ? "Submitting..." : "Submit to Your Chapter"}
                   </Button>
                 </form>
               </Form>
@@ -819,10 +904,9 @@ export default function Home() {
       </Section>
 
       {/* ── Footer ─────────────────────────────────────────────────────────── */}
-      <footer className="py-10 px-6 text-center text-sm text-muted-foreground border-t border-border/40">
+      <footer className="py-10 px-6 text-center text-sm text-muted-foreground border-t border-foreground/15">
         <p className="font-serif text-base text-foreground mb-1">Between Chapters</p>
         <p>A Self MBA project. Built publicly. Every decision documented.</p>
-        <Link href="/analytics" className="text-primary hover:underline mt-3 inline-block text-xs" data-testid="link-footer-analytics">View Validation Lab Analytics</Link>
       </footer>
     </div>
   );

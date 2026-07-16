@@ -40,7 +40,7 @@ export default function Analytics() {
 
   if (analyticsLoading) {
     return (
-      <div className="min-h-screen bg-background p-6">
+      <div className="min-h-screen bg-foreground/[0.03] p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <Skeleton className="h-12 w-48" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -59,11 +59,11 @@ export default function Analytics() {
 
   if (!analytics || analytics.totalResponses === 0) {
     return (
-      <div className="min-h-screen bg-background p-6 flex flex-col items-center justify-center text-center">
+      <div className="min-h-screen bg-foreground/[0.03] p-6 flex flex-col items-center justify-center text-center">
         <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-6">
           <Activity className="w-8 h-8 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-serif mb-2 text-foreground">Validation Lab Empty</h2>
+        <h2 className="text-2xl font-serif mb-2 text-foreground">Your Chapter Empty</h2>
         <p className="text-muted-foreground mb-8">
           Be the first to respond to the survey and shape the brand.
         </p>
@@ -88,11 +88,11 @@ export default function Analytics() {
     )[0]?.label || "None";
 
   return (
-    <div className="min-h-screen bg-background">
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
+    <div className="min-h-screen bg-transparent">
+      <nav className="sticky top-0 z-50 bg-primary/5 backdrop-blur-md border-b border-foreground/10">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="font-serif font-semibold text-xl tracking-tight text-foreground">
-            Validation Lab
+            Your Chapter
           </div>
           <Link
             href="/"
