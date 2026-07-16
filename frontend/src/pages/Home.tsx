@@ -72,32 +72,47 @@ function AnimatedNumber({ value, prefix = "", suffix = "" }: { value: string; pr
 
 function OptionButton({ selected, onClick, children, dataTestId }: { selected: boolean; onClick: () => void; children: React.ReactNode; dataTestId?: string }) {
   return (
-    <button
+    <motion.button
       type="button"
+      whileHover={{ scale: 1.02, y: -2 }}
+      whileTap={{ scale: 0.97 }}
       onClick={onClick}
       data-testid={dataTestId}
-      className={`px-4 py-3 cursor-pointer rounded-lg border text-sm text-left transition-all ${selected
+      className={`px-4 py-3 cursor-pointer rounded-lg border text-sm text-left transition-colors ${selected
         ? "border-primary bg-primary/10 text-primary font-medium"
         : "border-foreground/25 bg-transparent hover:border-primary/50 hover:bg-primary/5"
       }`}
     >
       {selected && <Check className="inline w-3.5 h-3.5 mr-1.5 -mt-0.5" />}
       {children}
-    </button>
+    </motion.button>
   );
 }
 
 // ─── Section Wrapper ──────────────────────────────────────────────────────────
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.6, staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+};
 
 function Section({ id, className = "", children }: { id?: string; className?: string; children: React.ReactNode }) {
   return (
     <motion.section
       id={id}
       className={`py-20 px-6 ${className}`}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6 }}
     >
       {children}
     </motion.section>
@@ -175,13 +190,13 @@ export default function Home() {
       {/* ── Navigation ─────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-primary/5 backdrop-blur-md border-b border-foreground/20">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <span className="font-serif text-lg text-foreground tracking-tight">Between Chapters</span>
+          <motion.span whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="font-serif text-lg text-foreground tracking-tight cursor-default">Between Chapters</motion.span>
           <div className="hidden md:flex gap-6 text-sm">
-            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
-            <a href="#timeline" className="text-muted-foreground hover:text-foreground transition-colors">Journey</a>
-            <a href="#brand" className="text-muted-foreground hover:text-foreground transition-colors">The Brand</a>
-            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-            <a href="#survey" className="text-muted-foreground hover:text-foreground transition-colors">Your Chapter</a>
+            <a href="#about" className="text-muted-foreground hover:text-foreground hover:scale-105 hover:-translate-y-[1px] transition-all">About</a>
+            <a href="#timeline" className="text-muted-foreground hover:text-foreground hover:scale-105 hover:-translate-y-[1px] transition-all">Journey</a>
+            <a href="#brand" className="text-muted-foreground hover:text-foreground hover:scale-105 hover:-translate-y-[1px] transition-all">The Brand</a>
+            <a href="#pricing" className="text-muted-foreground hover:text-foreground hover:scale-105 hover:-translate-y-[1px] transition-all">Pricing</a>
+            <a href="#survey" className="text-muted-foreground hover:text-foreground hover:scale-105 hover:-translate-y-[1px] transition-all">Your Chapter</a>
           </div>
         </div>
       </nav>
@@ -199,12 +214,15 @@ export default function Home() {
               a living business experiment. Every concept applied immediately. Every decision documented here.
             </p>
             <div className="flex flex-wrap gap-4 mb-16">
-              {["11 Concepts Applied", "Brand Strategy", "Real Customer Research", "Live Analytics Dashboard"].map((pill) => (
-                <span key={pill} className="px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full border border-primary/20">{pill}</span>
+              {["11 Concepts Applied", "Brand Strategy", "Real Customer Research", "Live Analytics Dashboard"].map((pill, i) => (
+                <motion.span key={pill} whileHover={{ y: -3, scale: 1.05, rotate: i % 2 === 0 ? 1.5 : -1.5 }} className="px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full border border-primary/20 cursor-default shadow-sm hover:shadow-md">{pill}</motion.span>
               ))}
             </div>
             <a href="#about" className="inline-flex items-center gap-2 text-muted-foreground text-sm hover:text-foreground transition-colors" data-testid="link-scroll-about">
-              <ArrowDown className="w-4 h-4 animate-bounce" /> Scroll to explore
+              <motion.div animate={{ y: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>
+                <ArrowDown className="w-4 h-4 text-primary" />
+              </motion.div>
+              Scroll to explore
             </a>
           </motion.div>
         </div>
@@ -245,13 +263,14 @@ export default function Home() {
                   key={i}
                   initial={{ opacity: 0, x: -16 }}
                   whileInView={{ opacity: 1, x: 0 }}
+                  whileHover={{ x: 6 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.04, duration: 0.4 }}
-                  className="pl-8 relative"
+                  className="pl-8 relative group cursor-default"
                 >
-                  <div className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent" />
+                  <div className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-primary bg-transparent transition-transform duration-300 group-hover:scale-[1.3] group-hover:bg-primary/20" />
                   <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-0.5">{item.week}</p>
-                  <p className="font-serif text-lg text-foreground">{item.concept}</p>
+                  <p className="font-serif text-lg text-foreground transition-colors group-hover:text-primary">{item.concept}</p>
                   <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">{item.note}</p>
                 </motion.div>
               ))}
@@ -401,13 +420,13 @@ export default function Home() {
                 highlight: true,
               },
             ].map((s) => (
-              <div key={s.stage} className={`p-6 rounded-xl border ${s.highlight ? "bg-primary/5 border-primary/25" : "bg-transparent border-foreground/20"}`}>
+              <motion.div variants={itemVariants} key={s.stage} className={`p-6 rounded-xl border hover:scale-[1.01] hover:shadow-sm transition-all duration-300 ${s.highlight ? "bg-primary/5 border-primary/25" : "bg-transparent border-foreground/20"}`}>
                 <div className="flex flex-wrap gap-3 items-baseline mb-2">
                   <p className={`text-xs font-semibold tracking-wider uppercase ${s.highlight ? "text-primary" : "text-muted-foreground"}`}>{s.stage}</p>
                   <p className={`font-serif text-lg ${s.highlight ? "text-primary" : "text-foreground"}`}>{s.label}</p>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">{s.content}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -444,7 +463,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="mt-6 bg-muted/40 rounded-xl border border-foreground/15 p-6">
+          <div className="mt-6 bg-muted/40 rounded-xl border border-foreground/15 p-6 hover:scale-[1.01] transition-transform duration-300">
             <p className="text-xs text-muted-foreground font-semibold tracking-wider uppercase mb-2">Bias Between Chapters will NOT use</p>
             <p className="font-serif text-lg text-foreground mb-2">Reactance Theory</p>
             <p className="text-sm text-muted-foreground leading-relaxed">No fake urgency. No 'only 2 slots left!!!'. No manipulative exclusivity. People should feel understood, not pressured. Overusing Reactance Theory would make the brand feel transactional instead of intimate and memory-driven.</p>
@@ -463,8 +482,8 @@ export default function Home() {
               { type: "Emotional Job", text: "When I feel disconnected from the fast and performative nature of most celebrations, I want to experience a warm and personal event, so I can feel emotionally present and genuinely connected to the people around me." },
               { type: "Social Job", text: "When I host a celebration or event, I want it to feel unique, cinematic, and thoughtfully curated, so I can express my identity and be remembered for creating meaningful experiences." },
             ].map((job) => (
-              <div key={job.type} className="bg-foreground/[0.03] p-6 rounded-xl border border-foreground/20">
-                <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-3">{job.type}</p>
+              <div key={job.type} className="p-5 bg-transparent border border-foreground/20 rounded-xl hover:-translate-y-1 hover:shadow-md hover:border-primary/30 transition-all duration-300">
+                <p className="text-xs text-primary font-semibold tracking-wider uppercase mb-2">{job.type}</p>
                 <p className="text-foreground leading-relaxed italic font-serif text-lg">"{job.text}"</p>
               </div>
             ))}
@@ -517,7 +536,7 @@ export default function Home() {
               { segment: "Convenience Seekers", chosen: false, desc: "Busy professionals who want someone else to organize with minimal effort. They prioritize speed and price over emotional storytelling." },
               { segment: "Luxury Experience Buyers", chosen: false, desc: "Motivated by exclusivity and status, not meaningful connection. Their values don't align with the brand's purpose." },
             ].map((s) => (
-              <div key={s.segment} className={`p-5 rounded-xl border ${s.chosen ? "bg-primary/5 border-primary/30" : "bg-transparent border-foreground/20 opacity-75"}`}>
+              <div key={s.segment} className={`p-5 rounded-xl border hover:scale-[1.02] hover:shadow-md transition-all duration-300 ${s.chosen ? "bg-primary/5 border-primary/30" : "bg-transparent border-foreground/20 opacity-75"}`}>
                 {s.chosen && <span className="inline-block px-2 py-0.5 text-xs font-semibold bg-primary text-primary-foreground rounded-full mb-3">Chosen</span>}
                 <p className={`font-serif text-base mb-2 ${s.chosen ? "text-foreground" : "text-muted-foreground"}`}>{s.segment}</p>
                 <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
@@ -651,14 +670,14 @@ export default function Home() {
               { label: "Between Chapters Solutions", color: "text-primary", items: ["Every event begins with the client's story, interests, and personality before any design decision", "Between Chapters manages creative direction, vendor coordination, styling, and execution end-to-end", "Experiences designed around emotion and intimate moments — not social media trends"] },
               { label: "Customer Gains", color: "text-green-600", items: ["A celebration that feels deeply personal and reflects their personality", "Beautiful aesthetics that feel timeless rather than trendy", "An effortless planning experience while still feeling involved in the creative process"] },
             ].map((col) => (
-              <div key={col.label} className="bg-foreground/[0.03] p-6 rounded-xl border border-foreground/20">
+              <motion.div variants={itemVariants} key={col.label} className="bg-foreground/[0.03] p-6 rounded-xl border border-foreground/20 hover:scale-[1.01] hover:shadow-md transition-all duration-300">
                 <p className={`text-xs font-semibold tracking-wider uppercase mb-4 ${col.color}`}>{col.label}</p>
                 <ul className="space-y-3">
                   {col.items.map((item, i) => (
                     <li key={i} className="text-sm text-muted-foreground leading-relaxed pl-3 border-l border-foreground/25">{item}</li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             ))}
           </div>
           <div className="mt-8 border-l-2 border-primary pl-6">
@@ -681,7 +700,7 @@ export default function Home() {
               { name: "The Story", price: "₹14,500", badge: "Most Popular", desc: "Enhanced styling, personalization, planning and photography coordination.", features: ["Everything in The Moment", "Enhanced personalization", "Photography coordination", "Creative theme development"] },
               { name: "The Chapter", price: "₹17,900", badge: "Decoy", desc: "Premium decor upgrades, multiple activity zones, and extended planning support.", features: ["Everything in The Story", "Premium decor upgrades", "Multiple activity zones", "Extended planning support"] },
             ].map((pkg) => (
-              <div key={pkg.name} className={`p-7 rounded-xl border ${pkg.badge === "Most Popular" ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-foreground/20 bg-transparent"}`}>
+              <motion.div variants={itemVariants} key={pkg.name} className={`p-7 rounded-xl border hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 ${pkg.badge === "Most Popular" ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-foreground/20 bg-transparent"}`}>
                 {pkg.badge && <span className={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full mb-4 ${pkg.badge === "Most Popular" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{pkg.badge}</span>}
                 <h3 className="font-serif text-xl text-foreground mb-1">{pkg.name}</h3>
                 <p className="text-3xl font-serif text-foreground mb-2">{pkg.price}</p>
@@ -689,7 +708,7 @@ export default function Home() {
                 <ul className="space-y-2">
                   {pkg.features.map((f) => <li key={f} className="text-xs text-muted-foreground flex gap-2"><Check className="w-3.5 h-3.5 text-primary mt-0.5 flex-shrink-0" />{f}</li>)}
                 </ul>
-              </div>
+              </motion.div>
             ))}
           </div>
           <div className="mt-5 bg-muted/30 rounded-xl border border-foreground/15 p-6 flex flex-col lg:flex-row gap-4 lg:gap-6 lg:items-center justify-between">
@@ -816,12 +835,15 @@ export default function Home() {
                           { val: "story", name: "The Story", price: "₹14,500", desc: "Enhanced styling, personalization + photography" },
                           { val: "chapter", name: "The Chapter", price: "₹17,900", desc: "Premium decor, multiple zones + extended support" },
                         ].map((pkg) => (
-                          <button type="button" key={pkg.val} onClick={() => field.onChange(pkg.val)} data-testid={`option-package-${pkg.val}`}
-                            className={`p-4 cursor-pointer rounded-lg border text-left transition-all ${field.value === pkg.val ? "border-primary bg-primary/10 ring-1 ring-primary/20" : "border-foreground/20 bg-transparent hover:border-primary/40"}`}>
+                          <motion.button type="button" key={pkg.val} 
+                            whileHover={{ scale: 1.03, y: -3 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={() => field.onChange(pkg.val)} data-testid={`option-package-${pkg.val}`}
+                            className={`p-4 cursor-pointer rounded-lg border text-left transition-colors ${field.value === pkg.val ? "border-primary bg-primary/10 ring-1 ring-primary/20" : "border-foreground/20 bg-transparent hover:border-primary/40"}`}>
                             <p className={`font-medium text-sm mb-1 ${field.value === pkg.val ? "text-primary" : "text-foreground"}`}>{pkg.name}</p>
                             <p className="font-serif text-xl text-foreground mb-1">{pkg.price}</p>
                             <p className="text-xs text-muted-foreground leading-snug">{pkg.desc}</p>
-                          </button>
+                          </motion.button>
                         ))}
                       </div>
                       <FormMessage />
@@ -893,9 +915,11 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full cursor-pointer" disabled={submitSurvey.isPending} data-testid="button-submit-survey">
-                    {submitSurvey.isPending ? "Submitting..." : "Submit to Your Chapter"}
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <Button type="submit" className="w-full cursor-pointer shadow-sm hover:shadow-md transition-shadow" disabled={submitSurvey.isPending} data-testid="button-submit-survey">
+                      {submitSurvey.isPending ? "Submitting..." : "Submit to Your Chapter"}
+                    </Button>
+                  </motion.div>
                 </form>
               </Form>
             </div>

@@ -1,3 +1,12 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#D5A67A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Left Page: Event/Magic -->
+  <path d="M5 10 h 35 a 10 10 0 0 1 10 10 v 70 a 10 10 0 0 0 -10 -10 H 5 z" fill="#D5A67A" fill-opacity="0.15"/>
+  <path d="M 25 30 L 28 42 L 40 45 L 28 48 L 25 60 L 22 48 L 10 45 L 22 42 Z" fill="#D5A67A" stroke="none" />
+  
+  <!-- Right Page: Marketing/Analytics -->
+  <path d="M95 10 H 60 a 10 10 0 0 0 -10 10 v 70 a 10 10 0 0 1 10 -10 h 35 z" fill="#D5A67A" fill-opacity="0.15"/>
+  <!-- Chart Bars -->
+  <line x1="65" y1="58" x2="65" y2="70" stroke-width="10" />
+  <line x1="77" y1="42" x2="77" y2="70" stroke-width="10" />
+  <line x1="89" y1="26" x2="89" y2="70" stroke-width="10" />
 </svg>
